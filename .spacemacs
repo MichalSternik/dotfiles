@@ -22,17 +22,20 @@ values."
      ;; auto-completion
      colors
      emacs-lisp
-     ;;git
-     ;;markdown
+     games
+     git
+     erc
      pandoc
      org
+     clojure
      racket
-     ;;(shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom
-     ;;        shell-default-shell 'eshell)
-     ;; spell-checking
-     ;; syntax-checking
+     scheme
+     (shell :variables
+            shell-default-height 31
+            shell-default-position 'bottom
+            shell-default-shell 'eshell)
+     spell-checking
+     syntax-checking
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -63,7 +66,7 @@ values."
    ;; (default t)
    dotspacemacs-elpa-https t
    ;; Maximum allowed time in seconds to contact an ELPA repository.
-   dotspacemacs-elpa-timeout 5
+   dotspacemacs-elpa-timeout 7
    ;; If non nil then spacemacs will check for updates at startup
    ;; when the current branch is not `develop'. (default t)
    dotspacemacs-check-for-update t
@@ -89,24 +92,19 @@ values."
    ;; `dotspacemacs-startup-lists' doesn't include `recents'. (default 5)
    dotspacemacs-startup-recent-list-size 7
    ;; Default major mode of the scratch buffer (default `text-mode')
-   dotspacemacs-scratch-mode 'text-mode
+   dotspacemacs-scratch-mode 'org-mode
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
                          solarized-light
-                         solarized-dark
-                         spacemacs-light
-                         spacemacs-dark
-                         leuven
-                         monokai
-                         zenburn)
+                         solarized-dark)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Inconsolata Go"
-                               :size 19
+   dotspacemacs-default-font '("Anonymous Pro"
+                               :size 21
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -128,7 +126,6 @@ values."
    ;; In the terminal, these pairs are generally indistinguishable, so this only
    ;; works in the GUI. (default nil)
    dotspacemacs-distinguish-gui-tab nil
-   ;; (Not implemented) dotspacemacs-distinguish-gui-ret nil
    ;; The command key used for Evil commands (ex-commands) and
    ;; Emacs commands (M-x).
    ;; By default the command key is `:' so ex-commands are executed like in Vim
@@ -248,6 +245,9 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
+
+  (setq clojure-enable-fancify-symbols t)
+  (set-default truncate-lines nil)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
