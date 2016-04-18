@@ -11,16 +11,17 @@ Plugin 'michaeljsmith/vim-indent-object'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'ervandew/supertab'
-Plugin 'godlygeek/tabular' "tabularizes stuff.
 Plugin 'jiangmiao/auto-pairs' "adds automatic closing of stuff like brackets etc.
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'wlangstroth/vim-racket'
+Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'reedes/vim-pencil'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
 set background=light " helps setting the right contrast
-colorscheme solarized 
+colorscheme solarized
 
 syntax on
 setglobal fileencoding=utf-8 bomb
@@ -30,8 +31,8 @@ set nocompatible
 set hidden " hides buffers instead of closing them - useful for editing a few files at the same time.
 set tabstop=8       " this and two below probably unnecesary, think about deleting
 set softtabstop=8
-set shiftwidth=8   
-set expandtab 
+set shiftwidth=8
+set expandtab
 set relativenumber  " shows number of the column
 set showcmd
 set ruler
@@ -50,27 +51,56 @@ set noundofile
 set wildmenu            " this and the following set autocompition.
 set wildmode=list:longest
 set guioptions-=T       " set no toolbar in GUI version.
-set guioptions+=m       " sets menubar in gVIm 
+set guioptions+=m       " sets menubar in gVIm
 set guifont=Anonymous\ Pro\ 21
 
 " Plugins behaviour:
 let g:airline#extensions#tabline#enabled = 1
 set laststatus=2
-let g:ctrlp_working_path_mode = 'ra' " Sets ctrlp working range to local root. 
+let g:ctrlp_working_path_mode = 'ra' " Sets ctrlp working range to local root.
 let g:SuperTabDefaultCompletionType ="context"
 let g:goyo_width = 100
-let g:pencil#autoformat = 1  
+let g:pencil#autoformat = 1
 let g:pencil#textwidth = 93
+
+" Rainbow parentheses stuff
+
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['black',       'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+"" always on
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
 
 
 " Key remaps:
 inoremap fd <Esc>
 inoremap ff <Esc>
+inoremap dd <Esc>
+inoremap df <Esc>
 nnoremap ; :
 nnoremap : ;
-let mapleader=","
-nnoremap <F5> :GundoToggle<CR>
-nnoremap <F7>  :TogglePencil <CR> 
+map <Space> \
+nnoremap <F7>  :TogglePencil <CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <Leader>m :CtrlP<CR>
 nnoremap <Backspace> :nohlsearch<CR>
@@ -100,4 +130,3 @@ function MyDiff()
   endif
   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
-
