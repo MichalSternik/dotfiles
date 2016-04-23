@@ -3,67 +3,81 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'VundleVim/Vundle.vim' " let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'tpope/vim-vinegar'
 Plugin 'scrooloose/nerdcommenter'
-Plugin 'michaeljsmith/vim-indent-object'
-Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-surround'
-Plugin 'ervandew/supertab'
-Plugin 'jiangmiao/auto-pairs' "adds automatic closing of stuff like brackets etc.
+Plugin 'jiangmiao/auto-pairs' 
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'wlangstroth/vim-racket'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'reedes/vim-pencil'
+Plugin 'wincent/Command-T'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
-set background=light " helps setting the right contrast
-colorscheme solarized
 
+set background=dark " helps setting the right contrast
+colorscheme solarized
+set history=1000
 syntax on
 setglobal fileencoding=utf-8 bomb
 set encoding=utf-8
 let $LANG = 'en_US'
-set nocompatible
-set hidden " hides buffers instead of closing them - useful for editing a few files at the same time.
-set tabstop=8       " this and two below probably unnecesary, think about deleting
+set nocompatible        " never change that
+set scrolloff=5         " start scrolling five lines below the border
+set hidden              " hides buffers instead of closing them
+set tabstop=8
 set softtabstop=8
 set shiftwidth=8
-set expandtab
-set relativenumber  " shows number of the column
-set showcmd
-set ruler
-set ttyfast  " says to speed thing up a little bit
-set autoindent " well, auto-indent:)
+set backspace=indent,eol,start  "intuitive backspaceing
+set autoread            " if file changed outside of Vim change without asking
+set expandtab           " tabs are converted to spaces
+set relativenumber      " shows number of the column
+set showcmd             " display incomplete command
+set ruler               " creates a line where cursor is
+set ttyfast             " sayed to speed thing up a little bit
+set autoindent          " well, auto-indent:)
 set cursorline          " sets line on the one where the cursor is
 set showmatch           " highlight matching [{()}]
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
 set ignorecase          " searches are case insensitive...
-set novisualbell        " don't beep!
-set noerrorbells
-set nobackup            " doesn't create a backup file (annoying thing with tilda)
-set noswapfile          " more-o-less the same stuff as one above.
-set noundofile
+set smartcase           " unless it's beginning of the word
+set novisualbell        " no beeping
+set noerrorbells        " no beeping
+set undodir=~/.vim/vim-tmp,/var/tmp,/tmp
+set backupdir=~/.vim/vim-tmp,/var/tmp,/tmp
+set directory=~/.vim/vim-tmp,/var/tmp,/tmp
 set wildmenu            " this and the following set autocompition.
 set wildmode=list:longest
-set guioptions-=T       " set no toolbar in GUI version.
-set guioptions+=m       " sets menubar in gVIm
-set guifont=Anonymous\ Pro\ 21
+set guioptions-=menu
+set guioptions-=toolbar
+set guifont=Inconsolata\ Go\ 23
+set laststatus=2
+set nostartofline 
+set shell=zsh
+
+" jump to the last cursor position
+
+  autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+
+" double %% magic
+
+cnoremap <expr> %% expand('%:h').'/'
 
 " Plugins behaviour:
+
 let g:airline#extensions#tabline#enabled = 1
-set laststatus=2
-let g:ctrlp_working_path_mode = 'ra' " Sets ctrlp working range to local root.
-let g:SuperTabDefaultCompletionType ="context"
-let g:goyo_width = 100
 let g:pencil#autoformat = 1
 let g:pencil#textwidth = 93
 
-" Rainbow parentheses stuff
+" Rainbow parentheses config
 
 let g:rbpt_colorpairs = [
     \ ['brown',       'RoyalBlue3'],
@@ -92,18 +106,51 @@ au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
 
-" Key remaps:
-inoremap fd <Esc>
-inoremap ff <Esc>
-inoremap dd <Esc>
+"" Key remaps:
+
+" my own remaps
+
+inoremap fd <Esc> 
 inoremap df <Esc>
 nnoremap ; :
 nnoremap : ;
-map <Space> \
-nnoremap <F7>  :TogglePencil <CR>
-nnoremap <Leader>b :CtrlPBuffer<CR>
-nnoremap <Leader>m :CtrlP<CR>
+"let mapleader=" "
+map <Space> \ " somehow, this works better than solution above
+map Y y$ 
+imap <C-\> λ
+nnoremap <F7> :TogglePencil <CR>
 nnoremap <Backspace> :nohlsearch<CR>
+nnoremap <C-e> 5<C-e>
+nnoremap <C-y> 5<C-y>
+
+" MULTIPURPOSE TAB KEY
+" Indent if we're at the beginning of a line. Else, do completion.
+
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-p>"
+    endif
+endfunction
+inoremap <expr> <tab> InsertTabWrapper()
+inoremap <s-tab> <c-n>
+
+
+" RENAME CURRENT FILE
+
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+map <leader>r :call RenameFile()<cr>
+
 
 " Original content of the vimrc file.
 set diffexpr=MyDiff()
