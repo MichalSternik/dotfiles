@@ -20,12 +20,9 @@ values."
    '(
      ;; ----------------------------------------------------------------
      ;; auto-completion
-     colors
      emacs-lisp
-     games
-     git
-     erc
-     pandoc
+     (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
+     chrome
      org
      clojure
      racket

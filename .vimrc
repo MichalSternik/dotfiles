@@ -3,21 +3,29 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
+"Plugin manager && look'n'feel:
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'tpope/vim-vinegar'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'tpope/vim-surround'
-Plugin 'jiangmiao/auto-pairs' 
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'flazz/vim-colorschemes'
+"utilities:
+Plugin 'tpope/vim-surround'
+Plugin 'scrooloose/nerdcommenter'
+"better navigation:
+Plugin 'wincent/Command-T'
+Plugin 'justinmk/vim-sneak'
+Plugin 'rhysd/clever-f.vim'
+"quasi-lispy:
+Plugin 'jiangmiao/auto-pairs' 
 Plugin 'wlangstroth/vim-racket'
 Plugin 'kien/rainbow_parentheses.vim'
+"prose:
 Plugin 'reedes/vim-pencil'
-Plugin 'wincent/Command-T'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
+
+"" general config:
 
 set background=dark " helps setting the right contrast
 colorscheme solarized
@@ -32,14 +40,14 @@ set hidden              " hides buffers instead of closing them
 set tabstop=8
 set softtabstop=8
 set shiftwidth=8
-set backspace=indent,eol,start  "intuitive backspaceing
+set backspace=indent,eol,start "intuitive backspaceing
 set autoread            " if file changed outside of Vim change without asking
 set expandtab           " tabs are converted to spaces
 set relativenumber      " shows number of the column
 set showcmd             " display incomplete command
 set ruler               " creates a line where cursor is
 set ttyfast             " sayed to speed thing up a little bit
-set autoindent          " well, auto-indent:)
+set autoindent          " well, auto-indent
 set cursorline          " sets line on the one where the cursor is
 set showmatch           " highlight matching [{()}]
 set incsearch           " search as characters are entered
@@ -53,12 +61,19 @@ set backupdir=~/.vim/vim-tmp,/var/tmp,/tmp
 set directory=~/.vim/vim-tmp,/var/tmp,/tmp
 set wildmenu            " this and the following set autocompition.
 set wildmode=list:longest
-set guioptions-=menu
-set guioptions-=toolbar
-set guifont=Inconsolata\ Go\ 23
 set laststatus=2
 set nostartofline 
 set shell=zsh
+" GVIM specific settings:
+set ghr=0
+set guioptions+=m
+set guioptions+=a
+set guioptions+=i
+set guioptions-=T
+set guioptions-=r
+set guioptions-=l
+set guioptions-=b
+set guifont=Inconsolata\ Go\ 23
 
 " jump to the last cursor position
 
@@ -66,10 +81,6 @@ set shell=zsh
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
     \   exe "normal g`\"" |
     \ endif
-
-" double %% magic
-
-cnoremap <expr> %% expand('%:h').'/'
 
 " Plugins behaviour:
 
@@ -105,23 +116,36 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
-
-"" Key remaps:
-
-" my own remaps
+"" Key remaps and custom functions
+" own remaps
 
 inoremap fd <Esc> 
 inoremap df <Esc>
 nnoremap ; :
 nnoremap : ;
-"let mapleader=" "
-map <Space> \ " somehow, this works better than solution above
+nnoremap ` ' 
+nnoremap ' `
+let mapleader=" "
 map Y y$ 
 imap <C-\> λ
 nnoremap <F7> :TogglePencil <CR>
 nnoremap <Backspace> :nohlsearch<CR>
+nnoremap <Leader>d :bd<CR>
+nnoremap <Leader><Leader> <C-^>
+nnoremap <leader>r :call RenameFile()<cr>
 nnoremap <C-e> 5<C-e>
 nnoremap <C-y> 5<C-y>
+
+" Better split switching (Ctrl-j, Ctrl-k, Ctrl-h, Ctrl-l)
+
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-H> <C-W>h
+map <C-L> <C-W>l
+
+" double %% magic - envoked in command-mode, returns current dir
+
+cnoremap <expr> %% expand('%:h').'/'
 
 " MULTIPURPOSE TAB KEY
 " Indent if we're at the beginning of a line. Else, do completion.
@@ -137,7 +161,6 @@ endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
 
-
 " RENAME CURRENT FILE
 
 function! RenameFile()
@@ -148,32 +171,4 @@ function! RenameFile()
         exec ':silent !rm ' . old_name
         redraw!
     endif
-endfunction
-map <leader>r :call RenameFile()<cr>
-
-
-" Original content of the vimrc file.
-set diffexpr=MyDiff()
-function MyDiff()
-  let opt = '-a --binary '
-  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-  let arg1 = v:fname_in
-  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-  let arg2 = v:fname_new
-  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-  let arg3 = v:fname_out
-  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-  let eq = ''
-  if $VIMRUNTIME =~ ' '
-    if &sh =~ '\<cmd'
-      let cmd = '""' . $VIMRUNTIME . '\diff"'
-      let eq = '"'
-    else
-      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-    endif
-  else
-    let cmd = $VIMRUNTIME . '\diff'
-  endif
-  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
