@@ -21,12 +21,10 @@ values."
      ;; ----------------------------------------------------------------
      ;; auto-completion
      emacs-lisp
-     (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
-     chrome
      org
-     clojure
+     ;;clojure
      racket
-     scheme
+     ;; scheme
      (shell :variables
             shell-default-height 31
             shell-default-position 'bottom
@@ -241,5 +239,4 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
   (setq powerline-default-separator 'arrow)
-  (setq clojure-enable-fancify-symbols t)
   )
