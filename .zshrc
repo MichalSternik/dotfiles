@@ -82,3 +82,6 @@ export LANG=en_US.UTF-8
 # Example aliases
 alias e="emacsclient "
 alias c="cmus "
+alias ex="exit"
+alias cl="clear"
+alias vimrc="$EDITOR ~/.vimrc"

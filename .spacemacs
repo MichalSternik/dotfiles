@@ -22,7 +22,8 @@ values."
      ;; auto-completion
      emacs-lisp
      org
-     ;;clojure
+     (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
+     ;; clojure
      racket
      ;; scheme
      (shell :variables

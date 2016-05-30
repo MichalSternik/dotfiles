@@ -3,23 +3,23 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-"Plugin manager && look'n'feel:
+" Plugin manager && look'n'feel:
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'flazz/vim-colorschemes'
-"utilities:
+" utilities:
 Plugin 'myusuf3/numbers.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'scrooloose/nerdcommenter'
-"better navigation:
+" better navigation:
 Plugin 'wincent/Command-T'
 Plugin 'easymotion/vim-easymotion'
-"quasi-lispy:
+" quasi-lispy:
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'wlangstroth/vim-racket'
 Plugin 'kien/rainbow_parentheses.vim'
-"prose related:
+" prose related:
 Plugin 'reedes/vim-pencil'
 
 call vundle#end()
@@ -27,8 +27,22 @@ filetype plugin indent on
 
 "" general config:
 
-set background=dark " helps setting the right contrast
+" solarized
+set background=dark     
 colorscheme solarized
+let g:solarized_termtrans=0
+let g:solarized_degrade=0
+let g:solarized_bold=1
+let g:solarized_underline=1
+let g:solarized_italic=1
+let g:solarized_termcolors=16
+let g:solarized_contrast="normal"
+let g:solarized_visibility="normal"
+let g:solarized_diffmode="normal"
+let g:solarized_hitrail=0
+let g:solarized_menu=1
+
+" rest
 set history=1000
 syntax on
 setglobal fileencoding=utf-8 bomb
@@ -60,7 +74,7 @@ set nobackup
 set noswapfile
 set undodir=~/.vim/vim-tmp/
 set wildmenu            " this and the following set proper autocompition.
-set textwidth=83        " sets text width (surprise)
+"set textwidth=83        " sets text width (surprise)
 set wildmode=list:longest
 set laststatus=2
 set nostartofline
@@ -132,7 +146,7 @@ imap <C-\> λ
 nnoremap <F7> :TogglePencil <CR>
 nnoremap <Backspace> :nohlsearch<CR>
 nnoremap <Leader>d :bd<CR>
-nnoremap <Leader><Leader> <C-^>
+nnoremap <Leader><TAB> <C-^>
 nnoremap <leader>r :call RenameFile()<cr>
 nnoremap <C-e> 5<C-e>
 nnoremap <C-y> 5<C-y>
@@ -147,8 +161,8 @@ nmap <Leader>f <Plug>(easymotion-overwin-f)
 nmap s <Plug>(easymotion-overwin-f2)
 
 " Move to line
-map <Leader>L <Plug>(easymotion-bd-jk)
-nmap <Leader>L <Plug>(easymotion-overwin-line)
+map <Leader>l <Plug>(easymotion-bd-jk)
+nmap <Leader>l <Plug>(easymotion-overwin-line)
 
 " Move to word
 map  <Leader>w <Plug>(easymotion-bd-w)
