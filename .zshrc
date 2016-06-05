@@ -5,7 +5,7 @@
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
+ZSH_THEME="sternik"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -49,7 +49,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git command-not-found vi-mode web-search lein autojump common-aliases)
+plugins=(git command-not-found vi-mode web-search lein autojump common-aliases ubuntu)
 
 # User configuration
 
@@ -74,14 +74,10 @@ export LANG=en_US.UTF-8
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
 alias e="emacsclient "
 alias c="cmus "
-alias ex="exit"
+alias x="exit"
 alias cl="clear"
 alias vimrc="$EDITOR ~/.vimrc"
+alias mtr="metronome"
+alias cpdot="cp -f .vimrc .zshrc .spacemacs ~/Documents/dotfiles"

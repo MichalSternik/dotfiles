@@ -23,9 +23,9 @@ values."
      emacs-lisp
      org
      (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
-     ;; clojure
+     clojure
      racket
-     ;; scheme
+     scheme
      (shell :variables
             shell-default-height 31
             shell-default-position 'bottom
@@ -98,7 +98,7 @@ values."
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    dotspacemacs-default-font '("Anonymous Pro"
-                               :size 21
+                               :size 19
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)

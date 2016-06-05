@@ -15,35 +15,27 @@ Plugin 'scrooloose/nerdcommenter'
 " better navigation:
 Plugin 'wincent/Command-T'
 Plugin 'easymotion/vim-easymotion'
+Plugin 'tpope/vim-vinegar'
 " quasi-lispy:
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'wlangstroth/vim-racket'
 Plugin 'kien/rainbow_parentheses.vim'
 " prose related:
 Plugin 'reedes/vim-pencil'
+Plugin 'vim-scripts/vim-orgmode'
 
 call vundle#end()
 filetype plugin indent on
 
 "" general config:
 
-" solarized
-set background=dark     
-colorscheme solarized
-let g:solarized_termtrans=0
-let g:solarized_degrade=0
-let g:solarized_bold=1
-let g:solarized_underline=1
-let g:solarized_italic=1
-let g:solarized_termcolors=16
-let g:solarized_contrast="normal"
-let g:solarized_visibility="normal"
-let g:solarized_diffmode="normal"
-let g:solarized_hitrail=0
-let g:solarized_menu=1
+" colorscheme
+set t_Co=16
+set background=dark
+colorscheme kolor
 
 " rest
-set history=1000
+set history=10000
 syntax on
 setglobal fileencoding=utf-8 bomb
 set encoding=utf-8
@@ -62,7 +54,7 @@ set showcmd             " display incomplete command
 set ruler               " creates a line where cursor is
 set ttyfast             " sayed to speed things up a little bit
 set autoindent          " well, auto-indent
-set cursorline          " sets line on the one where the cursor is
+"set cursorline          " sets line on the one where the cursor is
 set showmatch           " highlight matching [{()}]
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
@@ -89,7 +81,7 @@ set guioptions-=T
 set guioptions-=r
 set guioptions-=l
 set guioptions-=b
-set guifont=Inconsolata\ Go\ 25
+set guifont=Inconsolata\ Go\ 15
 
 " jump to the last cursor position
 
@@ -114,7 +106,7 @@ let g:rbpt_colorpairs = [
     \ ['darkred',     'SeaGreen3'],
     \ ['darkmagenta', 'DarkOrchid3'],
     \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyaBlue3'],
+    \ ['gray',        'RoyalBlue3'],
     \ ['black',       'SeaGreen3'],
     \ ['darkmagenta', 'DarkOrchid3'],
     \ ['Darkblue',    'firebrick3'],
@@ -123,6 +115,7 @@ let g:rbpt_colorpairs = [
     \ ['darkred',     'DarkOrchid3'],
     \ ['red',         'firebrick3'],
     \ ]
+
 let g:rbpt_max = 16
 let g:rbpt_loadcmd_toggle = 0
 "" always on
