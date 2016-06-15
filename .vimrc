@@ -3,7 +3,7 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-" Plugin manager && look'n'feel:
+" Plugin manager && look:
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -11,18 +11,19 @@ Plugin 'flazz/vim-colorschemes'
 " utilities:
 Plugin 'myusuf3/numbers.vim'
 Plugin 'tpope/vim-surround'
-Plugin 'scrooloose/nerdcommenter'
+Plugin 'tpope/vim-speeddating'
+Plugin 'tpope/vim-commentary'
+Plugin 'jiangmiao/auto-pairs'
 " better navigation:
-Plugin 'wincent/Command-T'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-vinegar'
 " quasi-lispy:
-Plugin 'jiangmiao/auto-pairs'
 Plugin 'wlangstroth/vim-racket'
 Plugin 'kien/rainbow_parentheses.vim'
 " prose related:
 Plugin 'reedes/vim-pencil'
-Plugin 'vim-scripts/vim-orgmode'
+Plugin 'jceb/vim-orgmode'
 
 call vundle#end()
 filetype plugin indent on
@@ -30,31 +31,31 @@ filetype plugin indent on
 "" general config:
 
 " colorscheme
-set t_Co=16
-set background=dark
-colorscheme kolor
+set t_Co=256
+set background=light
+colorscheme solarized
 
 " rest
 set history=10000
 syntax on
-setglobal fileencoding=utf-8 bomb
-set encoding=utf-8
+ setglobal fileencoding=utf-8 bomb
+ set encoding=utf-8
 let $LANG = 'en_US'
-set nocompatible        " so it's Vim and not Vi
+set nocompatible        " so it's a proper Vim, not Vi.
 set scrolloff=5         " start scrolling five lines below the border
 set hidden              " hides buffers instead of closing them
 set tabstop=8
 set softtabstop=8
 set shiftwidth=8
-set backspace=indent,eol,start "intuitive backspaceing
+set backspace=indent,eol,start   
 set autoread            " if file changed outside of Vim, change without asking
 set expandtab           " tabs are converted to spaces
-set number              " shows number of the column
+set number              " shows number of the column - this way works w. plugin
 set showcmd             " display incomplete command
 set ruler               " creates a line where cursor is
 set ttyfast             " sayed to speed things up a little bit
 set autoindent          " well, auto-indent
-"set cursorline          " sets line on the one where the cursor is
+set cursorline          " sets line on the one where the cursor is
 set showmatch           " highlight matching [{()}]
 set incsearch           " search as characters are entered
 set hlsearch            " highlight matches
@@ -62,11 +63,13 @@ set ignorecase          " searches are case insensitive...
 set smartcase           " ...unless it's beginning of the word
 set novisualbell        " no beeping
 set noerrorbells        " no beeping
+" Don't do backup
 set nobackup
-set noswapfile
-set undodir=~/.vim/vim-tmp/
-set wildmenu            " this and the following set proper autocompition.
-"set textwidth=83        " sets text width (surprise)
+set nowritebackup
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+" One below and one following set proper autocompition.
+set wildmenu     
 set wildmode=list:longest
 set laststatus=2
 set nostartofline
@@ -81,22 +84,19 @@ set guioptions-=T
 set guioptions-=r
 set guioptions-=l
 set guioptions-=b
-set guifont=Inconsolata\ Go\ 15
+set guifont=Inconsolata\ Go\ 14
 
 " jump to the last cursor position
-
   autocmd BufReadPost *
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
     \   exe "normal g`\"" |
     \ endif
 
-" Plugins behaviour:
-
+"" Plugins behaviour:
+" Pencil settings
 let g:pencil#autoformat = 1
-let g:pencil#textwidth = 93
 
 " Rainbow parentheses config
-
 let g:rbpt_colorpairs = [
     \ ['brown',       'RoyalBlue3'],
     \ ['Darkblue',    'SeaGreen3'],
@@ -118,7 +118,7 @@ let g:rbpt_colorpairs = [
 
 let g:rbpt_max = 16
 let g:rbpt_loadcmd_toggle = 0
-"" always on
+"" rainbow always on
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
@@ -131,18 +131,19 @@ inoremap fd <Esc>
 inoremap df <Esc>
 nnoremap ; :
 nnoremap : ;
-nnoremap ` '
-nnoremap ' `
-let mapleader=" "
+nnoremap <F3> :SoftPencil <CR>
+map <Space> \
 map Y y$
 imap <C-\> λ
-nnoremap <F7> :TogglePencil <CR>
 nnoremap <Backspace> :nohlsearch<CR>
 nnoremap <Leader>d :bd<CR>
 nnoremap <Leader><TAB> <C-^>
-nnoremap <leader>r :call RenameFile()<cr>
+nnoremap <Leader>o :only<CR> " maximizes the split buffer
+nnoremap <Leader>r :call RenameFile()<cr> " calls function to rename current file
 nnoremap <C-e> 5<C-e>
 nnoremap <C-y> 5<C-y>
+nnoremap <Leader>b :CtrlPBuffer<CR>
+nnoremap <Leader>m :CtrlPMRU<CR>
 
 "" Easymotion configuration:
 
@@ -151,15 +152,16 @@ map  <Leader>f <Plug>(easymotion-bd-f)
 nmap <Leader>f <Plug>(easymotion-overwin-f)
 
 " s{char}{char} to move to {char}{char}
-nmap s <Plug>(easymotion-overwin-f2)
+nmap s <Plug>(easymotion-s2)
+nmap t <Plug>(easymotion-t2)
 
-" Move to line
-map <Leader>l <Plug>(easymotion-bd-jk)
-nmap <Leader>l <Plug>(easymotion-overwin-line)
-
-" Move to word
-map  <Leader>w <Plug>(easymotion-bd-w)
-nmap <Leader>w <Plug>(easymotion-overwin-w)
+"" Other
+" airline settings
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_right_sep=''
+let g:airline_left_sep=''
+let g:airline_theme="solarized"
+let g:airline#extensions#whitespace#enabled = 0
 
 " Better split switching
 map <C-j> <C-W>j
@@ -167,12 +169,10 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-" double %% magic - envoked in command-mode, returns current dir:
+" double %% magic - envoked in command-mode, returns current directory
 cnoremap <expr> %% expand('%:h').'/'
 
-" MULTIPURPOSE TAB KEY
-" Indent if we're at the beginning of a line. Else, do completion.
-
+" MULTIPURPOSE TAB KEY - indent if we're at the beginning of a line. Else, do completion.
 function! InsertTabWrapper()
     let col = col('.') - 1
     if !col || getline('.')[col - 1] !~ '\k'
@@ -185,7 +185,6 @@ inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
 
 " RENAME CURRENT FILE
-
 function! RenameFile()
     let old_name = expand('%')
     let new_name = input('New file name: ', expand('%'), 'file')

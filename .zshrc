@@ -61,6 +61,11 @@ source $ZSH/oh-my-zsh.sh
 export  EDITOR='vim'
 export LANG=en_US.UTF-8
 
+
+# By default, zsh considers many characters part of a word (e.g., _ and -).
+# Narrow that down to allow easier skipping through words via M-f and M-b.
+export WORDCHARS='*?[]~&;!$%^<>'
+
 # Preferred editor for local and remote sessions
  #if [[ -n $SSH_CONNECTION ]]; then
    #export EDITOR='vim'
@@ -74,10 +79,11 @@ export LANG=en_US.UTF-8
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
+alias v="vim "
 alias e="emacsclient "
 alias c="cmus "
 alias x="exit"
 alias cl="clear"
 alias vimrc="$EDITOR ~/.vimrc"
 alias mtr="metronome"
-alias cpdot="cp -f .vimrc .zshrc .spacemacs ~/Documents/dotfiles"
+alias cpdot="cp .vimrc .zshrc .spacemacs ~/Documents/dotfiles"
