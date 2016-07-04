@@ -32,8 +32,8 @@ filetype plugin indent on
 
 " colorscheme
 set t_Co=256
-set background=light
-colorscheme solarized
+set background=dark
+colorscheme grb256
 
 " rest
 set history=10000
@@ -47,7 +47,7 @@ set hidden              " hides buffers instead of closing them
 set tabstop=8
 set softtabstop=8
 set shiftwidth=8
-set backspace=indent,eol,start   
+set backspace=indent,eol,start
 set autoread            " if file changed outside of Vim, change without asking
 set expandtab           " tabs are converted to spaces
 set number              " shows number of the column - this way works w. plugin
@@ -69,7 +69,7 @@ set nowritebackup
 set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 " One below and one following set proper autocompition.
-set wildmenu     
+set wildmenu
 set wildmode=list:longest
 set laststatus=2
 set nostartofline
@@ -138,8 +138,8 @@ imap <C-\> λ
 nnoremap <Backspace> :nohlsearch<CR>
 nnoremap <Leader>d :bd<CR>
 nnoremap <Leader><TAB> <C-^>
-nnoremap <Leader>o :only<CR> " maximizes the split buffer
-nnoremap <Leader>r :call RenameFile()<cr> " calls function to rename current file
+nnoremap <Leader>o :only<CR>
+nnoremap <Leader>r :call RenameFile()<cr>
 nnoremap <C-e> 5<C-e>
 nnoremap <C-y> 5<C-y>
 nnoremap <Leader>b :CtrlPBuffer<CR>

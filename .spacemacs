@@ -18,8 +18,7 @@ values."
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
-     ;; ----------------------------------------------------------------
-     ;; auto-completion
+     themes-megapack
      emacs-lisp
      org
      (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
@@ -30,8 +29,6 @@ values."
             shell-default-height 31
             shell-default-position 'bottom
             shell-default-shell 'eshell)
-     spell-checking
-     syntax-checking
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -79,7 +76,7 @@ values."
    ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
-   dotspacemacs-startup-banner 'official
+   dotspacemacs-startup-banner 4
    ;; List of items to show in the startup buffer. If nil it is disabled.
    ;; Possible values are: `recents' `bookmarks' `projects'.
    ;; (default '(recents projects))
@@ -93,13 +90,15 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
-                         solarized-light
-                         solarized-dark
-                         )
+                         cyberpunk
+                         minimal
+                         ;; solarized-light
+                         ;; solarized-dark
+                        )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
-   dotspacemacs-default-font '("Anonymous Pro"
-                               :size 19
+   dotspacemacs-default-font '("consolas"
+                               :size 17
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -172,7 +171,7 @@ values."
    dotspacemacs-loading-progress-bar t
    ;; If non nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
-   dotspacemacs-fullscreen-at-startup nil
+   dotspacemacs-fullscreen-at-startup t
    ;; If non nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
    dotspacemacs-fullscreen-use-non-native nil
@@ -241,4 +240,5 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
   (setq powerline-default-separator 'arrow)
-  )
+  '(visual-line-navigation t)
+                )

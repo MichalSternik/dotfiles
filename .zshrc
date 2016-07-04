@@ -49,7 +49,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git command-not-found vi-mode web-search lein autojump common-aliases ubuntu)
+plugins=(git command-not-found vi-mode lein autojump common-aliases ubuntu)
 
 # User configuration
 
@@ -58,7 +58,7 @@ plugins=(git command-not-found vi-mode web-search lein autojump common-aliases u
 
 source $ZSH/oh-my-zsh.sh
 
-export  EDITOR='vim'
+export  EDITOR='emacsclient'
 export LANG=en_US.UTF-8
 
 
@@ -80,7 +80,7 @@ export WORDCHARS='*?[]~&;!$%^<>'
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 alias v="vim "
-alias e="emacsclient "
+alias e="emacsclient --alternate-editor="" -t "
 alias c="cmus "
 alias x="exit"
 alias cl="clear"
