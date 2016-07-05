@@ -20,15 +20,22 @@ values."
    '(
      themes-megapack
      emacs-lisp
-     org
-     (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
-     clojure
+     (clojure :variables
+              clojure-enable-fancify-symbols t)
      racket
      scheme
+     ruby
+     python
      (shell :variables
-            shell-default-height 31
-            shell-default-position 'bottom
-            shell-default-shell 'eshell)
+             shell-default-height 42
+             shell-default-position 'bottom
+             shell-default-shell 'eshell
+             shell-enable-smart-eshell t)
+     (org :variables
+           org-enable-github-support t)
+     markdown
+     (evil-snipe :varbiables
+                  evil-snipe-enable-alternate-f-and-t-behaviors t)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -90,11 +97,9 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
-                         cyberpunk
-                         minimal
-                         ;; solarized-light
-                         ;; solarized-dark
-                        )
+                         sanityinc-solarized-light
+                         sanityinc-solarized-dark
+                         )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    dotspacemacs-default-font '("consolas"
@@ -196,10 +201,10 @@ values."
    ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
    ;; derivatives. If set to `relative', also turns on relative line numbers.
    ;; (default nil)
-   dotspacemacs-line-numbers 'relative
+   dotspacemacs-line-numbers nil
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
-   dotspacemacs-smartparens-strict-mode nil
+   dotspacemacs-smartparens-strict-mode t
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
    ;; emphasis the current one). (default 'all)
@@ -230,7 +235,7 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-  )
+)
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -239,6 +244,9 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
-  (setq powerline-default-separator 'arrow)
-  '(visual-line-navigation t)
-                )
+  (spacemacs/toggle-highlight-current-line-globally-off) ;; disables cursorline
+  (spacemacs/toggle-aggressive-indent-globally-on) ;; enables indentation as-you-type
+  (add-hook 'org-mode-hook 'spacemacs/toggle-visual-line-navigation-on) ;; nice line wrapping for org-mode
+  (spacemacs/toggle-truncate-lines-on) ;; well, truncates lines
+  (evil-define-key 'normal evil-normal-state-map "DEL" 'evil-search-highlight-persist-remove-all) ;; adds keymap to remove search hightlight, w. DEL
+  )

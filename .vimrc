@@ -32,8 +32,8 @@ filetype plugin indent on
 
 " colorscheme
 set t_Co=256
-set background=dark
-colorscheme grb256
+set background=light
+colorscheme solarized
 
 " rest
 set history=10000
@@ -54,7 +54,7 @@ set number              " shows number of the column - this way works w. plugin
 set showcmd             " display incomplete command
 set ruler               " creates a line where cursor is
 set ttyfast             " sayed to speed things up a little bit
-set autoindent          " well, auto-indent
+set autoindent          " just an auto-indent
 set cursorline          " sets line on the one where the cursor is
 set showmatch           " highlight matching [{()}]
 set incsearch           " search as characters are entered
