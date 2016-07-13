@@ -18,6 +18,10 @@ values."
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
+     (auto-completion :variables
+                      auto-completion-return-key-behavior 'complete
+                      auto-completion-tab-key-behavior 'cycle
+                      auto-completion-enable-snippets-in-popup t)
      themes-megapack
      emacs-lisp
      (clojure :variables
@@ -27,15 +31,15 @@ values."
      ruby
      python
      (shell :variables
-             shell-default-height 42
-             shell-default-position 'bottom
-             shell-default-shell 'eshell
-             shell-enable-smart-eshell t)
+            shell-default-height 42
+            shell-default-position 'bottom
+            shell-default-shell 'eshell
+            shell-enable-smart-eshell t)
      (org :variables
-           org-enable-github-support t)
+          org-enable-github-support t)
      markdown
      (evil-snipe :varbiables
-                  evil-snipe-enable-alternate-f-and-t-behaviors t)
+                 evil-snipe-enable-alternate-f-and-t-behaviors t)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -232,10 +236,10 @@ values."
   "Initialization function for user code.
 It is called immediately after `dotspacemacs/init', before layer configuration
 executes.
- This function is mostly useful for variables that need to be set
+ This function is mostly useful fOR variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-)
+  )
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -244,9 +248,11 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
+  (setq powerline-default-separator nil)
   (spacemacs/toggle-highlight-current-line-globally-off) ;; disables cursorline
   (spacemacs/toggle-aggressive-indent-globally-on) ;; enables indentation as-you-type
-  (add-hook 'org-mode-hook 'spacemacs/toggle-visual-line-navigation-on) ;; nice line wrapping for org-mode
   (spacemacs/toggle-truncate-lines-on) ;; well, truncates lines
-  (evil-define-key 'normal evil-normal-state-map "DEL" 'evil-search-highlight-persist-remove-all) ;; adds keymap to remove search hightlight, w. DEL
+  (add-hook 'org-mode-hook 'spacemacs/toggle-visual-line-navigation-on) ;; nice line wrapping for org-mode
+  (add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on) ;; nice line wrapping for text-mode
+  (spacemacs/toggle-fringe-off) ;; vi style tilda disabled
   )

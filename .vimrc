@@ -144,6 +144,7 @@ nnoremap <C-e> 5<C-e>
 nnoremap <C-y> 5<C-y>
 nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <Leader>m :CtrlPMRU<CR>
+nnoremap <Leader>fs :w<CR>
 
 "" Easymotion configuration:
 
@@ -183,6 +184,20 @@ function! InsertTabWrapper()
 endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
+
+" Z - cd to recent / frequent directories :: FASD integration
+command! -nargs=* Z :call Z(<f-args>)
+function! Z(...)
+  let cmd = 'fasd -d -e printf'
+  for arg in a:000
+    let cmd = cmd . ' ' . arg
+  endfor
+  let path = system(cmd)
+  if isdirectory(path)
+    echo path
+    exec 'cd ' . path
+  endif
+endfunction
 
 " RENAME CURRENT FILE
 function! RenameFile()
