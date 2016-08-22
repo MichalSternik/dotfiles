@@ -11,26 +11,25 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 
+# my aliases:
 
-# aliases:
-
-alias v="emacsclient --alternate-editor="" -t "
-alias e="emacsclient --alternate-editor="" -t "
+alias eg="emacsclient --alternate-editor="" -c"
+alias v="emacsclient --alternate-editor="" "
+alias e="emacsclient --alternate-editor="" "
 alias c="cmus "
-alias x="exit"
-alias cl="clear"
 alias vimrc="$EDITOR ~/.vimrc"
-alias space="$EDITOR ~/.spacemacs"
 alias mtr="metronome"
-alias cpdot="cp .vimrc .zshrc .spacemacs ~/Documents/dotfiles"
+alias cpdot="cp .vimrc ~/.zprezto/runcoms/.zshrc .spacemacs .muttrc ~/.zprezto/runcoms/.zpreztorc .tmux.conf ~/Documents/dotfiles"
 alias tomobi="~/kindlegen "
+alias mu="mutt"
 alias da="date"
 alias ag="sudo apt-get "
 alias g="git "
-alias pdf="atril "
-alias T="| tail"
-alias L="| less"
-alias H="| head"
+alias rkt="racket"
+alias py="python3.5 "
+alias lua="lua5.3 "
+alias sudoku="cd ~/Downloads/nudoku && ./src/nudoku"
+alias shut="shutdown now"
 
 # fasd aliases:
 

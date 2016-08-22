@@ -2,6 +2,9 @@ set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+" Because I switched to emacs, some of these are commented out,
+" to keep it lightweight and fast.
+
 
 " Plugin manager && look:
 Plugin 'VundleVim/Vundle.vim'
@@ -9,29 +12,27 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'flazz/vim-colorschemes'
 " utilities:
-Plugin 'myusuf3/numbers.vim'
+" Plugin 'myusuf3/numbers.vim'
 Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-speeddating'
+" Plugin 'tpope/vim-speeddating'
 Plugin 'tpope/vim-commentary'
 Plugin 'jiangmiao/auto-pairs'
 " better navigation:
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'easymotion/vim-easymotion'
-Plugin 'tpope/vim-vinegar'
+" Plugin 'ctrlpvim/ctrlp.vim'
+" Plugin 'easymotion/vim-easymotion'
+" Plugin 'tpope/vim-vinegar'
 " quasi-lispy:
-Plugin 'wlangstroth/vim-racket'
-Plugin 'kien/rainbow_parentheses.vim'
+" Plugin 'wlangstroth/vim-racket'
+" Plugin 'kien/rainbow_parentheses.vim'
 " prose related:
-Plugin 'reedes/vim-pencil'
-Plugin 'jceb/vim-orgmode'
+" Plugin 'reedes/vim-pencil'
+" Plugin 'jceb/vim-orgmode'
 
 call vundle#end()
 filetype plugin indent on
 
 "" general config:
 
-" colorscheme
-set t_Co=256
 set background=light
 colorscheme solarized
 
@@ -50,7 +51,7 @@ set shiftwidth=8
 set backspace=indent,eol,start
 set autoread            " if file changed outside of Vim, change without asking
 set expandtab           " tabs are converted to spaces
-set number              " shows number of the column - this way works w. plugin
+set relativenumber      " sets relative line numbering
 set showcmd             " display incomplete command
 set ruler               " creates a line where cursor is
 set ttyfast             " sayed to speed things up a little bit
@@ -84,7 +85,7 @@ set guioptions-=T
 set guioptions-=r
 set guioptions-=l
 set guioptions-=b
-set guifont=Inconsolata\ Go\ 14
+set guifont=Inconsolata\ Go\ 16
 
 " jump to the last cursor position
   autocmd BufReadPost *
@@ -92,43 +93,43 @@ set guifont=Inconsolata\ Go\ 14
     \   exe "normal g`\"" |
     \ endif
 
-"" Plugins behaviour:
-" Pencil settings
-let g:pencil#autoformat = 1
+" "" Plugins behaviour:
+" " Pencil settings
+" let g:pencil#autoformat = 1
 
-" Rainbow parentheses config
-let g:rbpt_colorpairs = [
-    \ ['brown',       'RoyalBlue3'],
-    \ ['Darkblue',    'SeaGreen3'],
-    \ ['darkgray',    'DarkOrchid3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['black',       'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['Darkblue',    'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkcyan',    'SeaGreen3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['red',         'firebrick3'],
-    \ ]
+" " Rainbow parentheses config
+" let g:rbpt_colorpairs = [
+"     \ ['brown',       'RoyalBlue3'],
+"     \ ['Darkblue',    'SeaGreen3'],
+"     \ ['darkgray',    'DarkOrchid3'],
+"     \ ['darkgreen',   'firebrick3'],
+"     \ ['darkcyan',    'RoyalBlue3'],
+"     \ ['darkred',     'SeaGreen3'],
+"     \ ['darkmagenta', 'DarkOrchid3'],
+"     \ ['brown',       'firebrick3'],
+"     \ ['gray',        'RoyalBlue3'],
+"     \ ['black',       'SeaGreen3'],
+"     \ ['darkmagenta', 'DarkOrchid3'],
+"     \ ['Darkblue',    'firebrick3'],
+"     \ ['darkgreen',   'RoyalBlue3'],
+"     \ ['darkcyan',    'SeaGreen3'],
+"     \ ['darkred',     'DarkOrchid3'],
+"     \ ['red',         'firebrick3'],
+"     \ ]
 
-let g:rbpt_max = 16
-let g:rbpt_loadcmd_toggle = 0
-"" rainbow always on
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
+" let g:rbpt_max = 16
+" let g:rbpt_loadcmd_toggle = 0
+" "" rainbow always on
+" au VimEnter * RainbowParenthesesToggle
+" au Syntax * RainbowParenthesesLoadRound
+" au Syntax * RainbowParenthesesLoadSquare
+" au Syntax * RainbowParenthesesLoadBraces
 
 "" Key remaps and custom functions
 " own remaps
 
 inoremap fd <Esc>
-inoremap df <Esc>
+" inoremap df <Esc>
 nnoremap ; :
 nnoremap : ;
 nnoremap <F3> :SoftPencil <CR>

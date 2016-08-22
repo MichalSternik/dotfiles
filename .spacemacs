@@ -23,13 +23,14 @@ values."
                       auto-completion-tab-key-behavior 'cycle
                       auto-completion-enable-snippets-in-popup t)
      themes-megapack
+     fasd
      emacs-lisp
-     (clojure :variables
-              clojure-enable-fancify-symbols t)
-     racket
-     scheme
+     erc
      ruby
-     python
+     (c-c++ :variables
+            c-c++-enable-clang-support t)
+     lua
+     racket
      (shell :variables
             shell-default-height 42
             shell-default-position 'bottom
@@ -38,8 +39,7 @@ values."
      (org :variables
           org-enable-github-support t)
      markdown
-     (evil-snipe :varbiables
-                 evil-snipe-enable-alternate-f-and-t-behaviors t)
+     evil-snipe
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -101,13 +101,13 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
-                         sanityinc-solarized-light
-                         sanityinc-solarized-dark
+                         spacemacs-light
+                         tronesque
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    dotspacemacs-default-font '("consolas"
-                               :size 17
+                               :size 21
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -248,11 +248,12 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
-  (setq powerline-default-separator nil)
+  (setq powerline-default-separator 'arrow)
   (spacemacs/toggle-highlight-current-line-globally-off) ;; disables cursorline
   (spacemacs/toggle-aggressive-indent-globally-on) ;; enables indentation as-you-type
   (spacemacs/toggle-truncate-lines-on) ;; well, truncates lines
   (add-hook 'org-mode-hook 'spacemacs/toggle-visual-line-navigation-on) ;; nice line wrapping for org-mode
   (add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on) ;; nice line wrapping for text-mode
   (spacemacs/toggle-fringe-off) ;; vi style tilda disabled
+  (toggle-frame-fullscreen)
   )
