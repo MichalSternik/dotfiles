@@ -9,8 +9,7 @@ values."
   (setq-default
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
-   ;; or `spacemacs'. (default 'spacemacs)
-   dotspacemacs-distribution 'spacemacs
+   ;; or `spacemacs'. (default 'spacemacs) dotspacemacs-distribution 'spacemacs
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layer-path '()
@@ -18,34 +17,30 @@ values."
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
+     (clojure :variables
+              clojure-enable-fancify-symbols t)
      (auto-completion :variables
                       auto-completion-return-key-behavior 'complete
                       auto-completion-tab-key-behavior 'cycle
                       auto-completion-enable-snippets-in-popup t)
      themes-megapack
-     fasd
      emacs-lisp
-     erc
      ruby
-     (c-c++ :variables
-            c-c++-enable-clang-support t)
-     lua
      racket
+     (evil-snipe :variables evil-snipe-enable-alternate-f-and-t-behaviors t)
      (shell :variables
             shell-default-height 42
             shell-default-position 'bottom
-            shell-default-shell 'eshell
-            shell-enable-smart-eshell t)
+            shell-default-shell 'eshell)
      (org :variables
           org-enable-github-support t)
      markdown
-     evil-snipe
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(sonic-pi)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -83,8 +78,7 @@ values."
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
    ;; the official spacemacs logo. An integer value is the index of text
-   ;; banner, `random' chooses a random text banner in `core/banners'
-   ;; directory. A string value must be a path to an image format supported
+   ;; banner, `random' chooses a random text banner in `core/banners';; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
    dotspacemacs-startup-banner 4
@@ -101,13 +95,13 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
-                         spacemacs-light
-                         tronesque
+                         cyberpunk
+                         sanityinc-solarized-light
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    dotspacemacs-default-font '("consolas"
-                               :size 21
+                               :size 19
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -133,7 +127,7 @@ values."
    ;; Emacs commands (M-x).
    ;; By default the command key is `:' so ex-commands are executed like in Vim
    ;; with `:' and Emacs commands are executed with `<leader> :'.
-   dotspacemacs-command-key ";"
+   dotspacemacs-command-key ":"
    ;; If non nil `Y' is remapped to `y$'. (default t)
    dotspacemacs-remap-Y-to-y$ t
    ;; Name of the default layout (default "Default")
@@ -183,11 +177,11 @@ values."
    dotspacemacs-fullscreen-at-startup t
    ;; If non nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
-   dotspacemacs-fullscreen-use-non-native nil
+   dotspacemacs-fullscreen-use-non-native t
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-maximized-at-startup t
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
@@ -248,12 +242,57 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
+
+
+  ;; DEL to clear highlights
+  (define-key evil-normal-state-map (kbd "DEL")
+    (lambda ()
+      (interactive)
+      (call-interactively 'spacemacs/evil-search-clear-highlight)))
+
+  ;; RET to insert a newline below. Useful with evaluating last sexp.
+  (define-key evil-normal-state-map (kbd "RET")
+    (lambda ()
+      (interactive)
+      (call-interactively 'spacemacs/evil-insert-line-below)
+      (evil-next-line)))
+
+  ;; Snipe config
+  (evil-snipe-mode 1)
+  (evil-snipe-override-mode 1)
+
+  ;; I just like shit pretty.
+  (defun my-pretty-lambda ()
+    "make some word or string show as pretty Unicode symbols"
+    (setq prettify-symbols-alist
+          '(
+            ("lambda" . 955) ; λ
+            )))
+
+  (add-hook 'scheme-mode-hook 'my-pretty-lambda)
+  (add-hook 'racket-mode-hook 'my-pretty-lambda)
+  (global-prettify-symbols-mode 1)
+
+  ;; Sonic Pi https://github.com/repl-electric/sonic-pi.el
+  (spacemacs/declare-prefix "o" "sonic-pi-prefix")
+  (setq sonic-pi-path "/usr/lib/sonic-pi/") ; Must end with "/"
+  (spacemacs/set-leader-keys "os" 'sonic-pi-send-buffer)
+  (spacemacs/set-leader-keys "oj" 'sonic-pi-jack-in)
+  (spacemacs/set-leader-keys "oc" 'sonic-pi-connect)
+  (spacemacs/set-leader-keys "oq" 'sonic-pi-quit)
+  (spacemacs/set-leader-keys "ok" 'sonic-pi-stop-all)
+
+  ;; Varia
+  (add-to-list 'default-frame-alist '(fullscreen . maximized)) ;; starts as a full window
   (setq powerline-default-separator 'arrow)
   (spacemacs/toggle-highlight-current-line-globally-off) ;; disables cursorline
   (spacemacs/toggle-aggressive-indent-globally-on) ;; enables indentation as-you-type
-  (spacemacs/toggle-truncate-lines-on) ;; well, truncates lines
+  (spacemacs/toggle-truncate-lines-on)
   (add-hook 'org-mode-hook 'spacemacs/toggle-visual-line-navigation-on) ;; nice line wrapping for org-mode
   (add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on) ;; nice line wrapping for text-mode
+  (add-hook 'markdown-mode-hook 'spacemacs/toggle-visual-line-navigation-on) ;; nice line wrapping for markdow-mode
   (spacemacs/toggle-fringe-off) ;; vi style tilda disabled
-  (toggle-frame-fullscreen)
+  (setq split-height-threshold nil)  ;; sets default split direction - vertical splits!
+  (setq split-width-threshold 0)
+  (spacemacs/set-leader-keys "SPC" 'avy-goto-word-or-subword-1) ;; old shortcut to avy-goto-word
   )

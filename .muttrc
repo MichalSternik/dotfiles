@@ -1,6 +1,6 @@
-source "~/.mutt/accounts/account1" # setup for smok.villentretenmerth
+source "~/.mutt/accounts/account1" # setup for smokvillentretenmerth
 source "~/.mutt/accounts/account2" # setup for michalsternikk
-source "~/.mutt/solarized_light.muttrc" # solarized light ftw
+source "~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-16.muttrc"
 
 # general && compose mail behaviour---------------------------------
 set ssl_starttls=yes  # settles secure connection
@@ -8,19 +8,19 @@ set ssl_force_tls=yes # ensures secure connection
 set header_cache=~/.mutt/cache/headers
 set message_cachedir=~/.mutt/cache/bodies
 set certificate_file=~/.mutt/certificates
-set editor="emacsclient --alternate-editor="" -nw"
+set editor="nvim"
 set text_flowed=yes # part of sane behaviour
 set move = no
 set record=""
 set sort = 'threads'
-set sleep_time = 0  # mutt is faster!
+set sleep_time = 0  # mutt responds faster!
 set sort_aux = 'last-date-received'
 set imap_check_subscribed
 set envelope_from                    # which from?
 set sig_dashes                       # dashes before sig
 set edit_headers                     # show headers when composing
 set fast_reply                       # skip to compose when replying
-set askcc                            # ask for CC:
+# set askcc                            # ask for CC:
 set fcc_attach                       # save attachments with the body
 unset mime_forward                   # forward attachments as part of body
 set forward_format = "Fwd: %s"       # format of subject when forwarding
@@ -44,11 +44,9 @@ unhdr_order *                           # some distros order things by default..
 hdr_order from: to: cc: date: subject:  # ...and i want things in this order
 
 # macros && sidebar, navigating mailboxes-------------
-macro index <f1> '<sync-mailbox><enter-command>source ~/.mutt/accounts/account1<enter><change-folder>!<enter>'
-macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/accounts/account2<enter><change-folder>!<enter>'
+macro index gs '<sync-mailbox><enter-command>source ~/.mutt/accounts/account1<enter><change-folder>!<enter>'
+macro index gm '<sync-mailbox><enter-command>source ~/.mutt/accounts/account2<enter><change-folder>!<enter>'
 macro index ga '=[Google Mail]/All Mail' 'Go to all mail'
-macro index gs '=[Google Mail]/Sent Mail' 'Go to Sent Mail'
-macro index gd '=[Google Mail]/Drafts' 'Go to drafts'
 # Sidebar Navigation
 bind index,pager <down>   sidebar-next
 bind index,pager <up>     sidebar-prev
@@ -60,15 +58,15 @@ bind index G        last-entry
 bind index R        group-reply
 bind index <tab>    sync-mailbox
 bind index <space>  collapse-thread
+
 # Ctrl-R to mark all as read
 macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
+
 # Saner copy/move dialogs
 macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
 macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 
 # Pager View Options ---------------------------------
-set pager_index_lines = 10 # number of index lines to show
-set pager_context = 3      # number of context lines to show
 set pager_stop             # don't go to next message automatically
 set menu_scroll            # scroll in menus
 set tilde                  # show tildes like in vim
@@ -82,6 +80,8 @@ bind pager j  next-line
 bind pager gg top
 bind pager G  bottom
 bind pager R  group-reply
+bind pager B bounce-message
+
 # View attachments properly.
 bind attach <return> view-mailcap
-macro pager \Cu "|urlview<enter>" "call urlview to open links"
+macro pager b "|urlview<enter>" "call urlview to open links"
