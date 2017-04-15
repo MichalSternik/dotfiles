@@ -13,27 +13,25 @@ Plugin 'justinmk/vim-sneak'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 Plugin 'jiangmiao/auto-pairs'
+Plugin 'tpope/vim-unimpaired'
 " better navigation:
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-vinegar'
 " lispy:
 Plugin 'wlangstroth/vim-racket'
 Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'vim-scripts/paredit.vim'
 call vundle#end()
 filetype plugin indent on
 
 "" general config:
-
 set termguicolors
 set background=dark
-colorscheme solarized8_dark
-
+colorscheme tango2
 set history=10000
 syntax enable
 setglobal fileencoding=utf-8 bomb
 set encoding=utf-8
-let $LANG = 'en_US'
+let $LANG='en_US'
 set scrolloff=5         " Start scrolling five lines to the border
 set hidden              " Hides buffers instead of closing them
 set tabstop=8
@@ -45,6 +43,7 @@ set autoread            " If file changed outside of Vim, change without asking
 set relativenumber      " Sets relative line numbering
 set showcmd             " Display incomplete command
 set autoindent          " An auto-indent
+set lisp                " for lisp magic to happen
 set cursorline          " Sets line on the one where the cursor is
 set showmatch           " Highlight matching [{()}]
 set incsearch           " Search as characters are entered
@@ -56,11 +55,13 @@ set noerrorbells        " No beeping
 set nobackup            " Don't do backup
 set nowritebackup
 set wildmenu            " Set proper autocompition.
+set path+=**            " enable recursive searching
 set wildmode=list:longest
 set laststatus=2
 set nostartofline
 set shell=zsh
 set splitright          " new vertical split will be started to right
+
 
 
 " jump to the last cursor position
@@ -118,7 +119,7 @@ let g:sneak#s_next = 1
 let g:airline#extensions#tabline#enabled = 0
 let g:airline_right_sep=''
 let g:airline_left_sep=''
-let g:airline_theme="solarized"
+" let g:airline_theme="solarized"
 let g:airline#extensions#whitespace#enabled = 0
 
 " Rainbow parentheses config

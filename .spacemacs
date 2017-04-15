@@ -40,7 +40,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(sonic-pi)
+   dotspacemacs-additional-packages '(sonic-pi osc dash)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -78,7 +78,8 @@ values."
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
    ;; the official spacemacs logo. An integer value is the index of text
-   ;; banner, `random' chooses a random text banner in `core/banners';; directory. A string value must be a path to an image format supported
+   ;; banner, `random' chooses a random text banner in `core/banners'
+   ;; directory. A string value must be a path to an image format supported
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
    dotspacemacs-startup-banner 4
@@ -96,13 +97,15 @@ values."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
                          cyberpunk
+                         tangotango
+                         gotham
                          sanityinc-solarized-light
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
-   dotspacemacs-default-font '("consolas"
+   dotspacemacs-default-font '("iosevka"
                                :size 19
-                               :weight normal
+                               :weight light
                                :width normal
                                :powerline-scale 1.1)
    ;; The leader key
@@ -202,7 +205,7 @@ values."
    dotspacemacs-line-numbers nil
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
-   dotspacemacs-smartparens-strict-mode t
+   dotspacemacs-smartparens-strict-mode 1
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
    ;; emphasis the current one). (default 'all)
@@ -244,7 +247,7 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place you code here."
 
 
-  ;; DEL to clear highlights
+  ;; DEL to clear search highlights
   (define-key evil-normal-state-map (kbd "DEL")
     (lambda ()
       (interactive)
@@ -262,20 +265,26 @@ you should place you code here."
   (evil-snipe-override-mode 1)
 
   ;; I just like shit pretty.
-  (defun my-pretty-lambda ()
+  (defun pretty-lambda ()
     "make some word or string show as pretty Unicode symbols"
     (setq prettify-symbols-alist
           '(
             ("lambda" . 955) ; λ
             )))
 
-  (add-hook 'scheme-mode-hook 'my-pretty-lambda)
-  (add-hook 'racket-mode-hook 'my-pretty-lambda)
+  (add-hook 'scheme-mode-hook 'pretty-lambda)
+  (add-hook 'racket-mode-hook 'pretty-lambda)
   (global-prettify-symbols-mode 1)
+
+  ;; GEISER Setup
+  (setq geiser-active-implementations '(racket))
+  (setq geiser-repl-autodoc-p 1)
+  (setq geiser-repl-query-on-kill-p nil)
 
   ;; Sonic Pi https://github.com/repl-electric/sonic-pi.el
   (spacemacs/declare-prefix "o" "sonic-pi-prefix")
   (setq sonic-pi-path "/usr/lib/sonic-pi/") ; Must end with "/"
+  (require 'sonic-pi)
   (spacemacs/set-leader-keys "os" 'sonic-pi-send-buffer)
   (spacemacs/set-leader-keys "oj" 'sonic-pi-jack-in)
   (spacemacs/set-leader-keys "oc" 'sonic-pi-connect)
@@ -283,16 +292,19 @@ you should place you code here."
   (spacemacs/set-leader-keys "ok" 'sonic-pi-stop-all)
 
   ;; Varia
+  (global-company-mode) ;; autocompletion everywhere
   (add-to-list 'default-frame-alist '(fullscreen . maximized)) ;; starts as a full window
   (setq powerline-default-separator 'arrow)
   (spacemacs/toggle-highlight-current-line-globally-off) ;; disables cursorline
   (spacemacs/toggle-aggressive-indent-globally-on) ;; enables indentation as-you-type
   (spacemacs/toggle-truncate-lines-on)
-  (add-hook 'org-mode-hook 'spacemacs/toggle-visual-line-navigation-on) ;; nice line wrapping for org-mode
-  (add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on) ;; nice line wrapping for text-mode
-  (add-hook 'markdown-mode-hook 'spacemacs/toggle-visual-line-navigation-on) ;; nice line wrapping for markdow-mode
+  (add-hook 'org-mode-hook 'spacemacs/toggle-visual-line-navigation-on)      ;; nice line wrapping for org-mode
+  (add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on)     ;; nice line wrapping for text-mode
+  (add-hook 'markdown-mode-hook 'spacemacs/toggle-visual-line-navigation-on) ;; nice line wrapping for markdown-mode
+  (add-hook 'org-mode-hook 'org-toggle-pretty-entities 1)
   (spacemacs/toggle-fringe-off) ;; vi style tilda disabled
   (setq split-height-threshold nil)  ;; sets default split direction - vertical splits!
-  (setq split-width-threshold 0)
+  (setq split-width-threshold 0)     ;; sets default split direction - vertical splits!
   (spacemacs/set-leader-keys "SPC" 'avy-goto-word-or-subword-1) ;; old shortcut to avy-goto-word
+
   )

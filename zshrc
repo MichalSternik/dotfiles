@@ -10,12 +10,14 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
     source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+# tututut
+
+export TERM=xterm-256color
 
 # my aliases:
 
-alias e="emacsclient --alternate-editor="" -c"
+alias e="emacsclient --alternate-editor="" -ct"
 alias eg="emacsclient --alternate-editor="" -c"
-alias et="emacsclient --alternate-editor="" "
 alias v="nvim"
 alias c="cmus "
 alias home="cd ~; clear"

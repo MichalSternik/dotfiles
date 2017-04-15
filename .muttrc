@@ -1,7 +1,8 @@
 source "~/.mutt/accounts/account1" # setup for smokvillentretenmerth
 source "~/.mutt/accounts/account2" # setup for michalsternikk
 source "~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-16.muttrc"
-
+source "~/.mutt/aliases.txt" # contact book 
+set display_filter="~/.mutt/alias_magic"
 # general && compose mail behaviour---------------------------------
 set ssl_starttls=yes  # settles secure connection
 set ssl_force_tls=yes # ensures secure connection
