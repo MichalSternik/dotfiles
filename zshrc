@@ -19,7 +19,7 @@ export TERM=xterm-256color
 alias e="emacsclient --alternate-editor="" -ct"
 alias eg="emacsclient --alternate-editor="" -c"
 alias v="nvim"
-alias c="cmus "
+alias c="TERM=tmux-256color cmus "
 alias home="cd ~; clear"
 alias vimrc="v ~/.vimrc"
 alias mtr="metronome"
@@ -32,11 +32,9 @@ alias rkt="racket"
 alias py="python3.5 "
 alias lua="lua5.3 "
 alias shut="shutdown now"
-
-# anti-procrastination aliases:
-
-# alias rtv="echo 'Do not procrastinate!'"
-# alias hn="echo 'sthap!'"
+alias irc="TERM=tmux-256color irssi"
+alias irssi="TERM=tmux-256color irssi"
+alias wee="TERM=screen-256color weechat"
 
 # fasd aliases:
 

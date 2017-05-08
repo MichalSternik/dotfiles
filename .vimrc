@@ -14,6 +14,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'tpope/vim-unimpaired'
+Plugin 'roman/golden-ratio'
 " better navigation:
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-vinegar'
@@ -24,9 +25,16 @@ call vundle#end()
 filetype plugin indent on
 
 "" general config:
-set termguicolors
-set background=dark
-colorscheme tango2
+
+" colors:
+if has("termguicolors")
+        set termguicolors
+endif
+
+set background=light
+" colorscheme wombat256i
+colorscheme solarized8_dark_flat
+
 set history=10000
 syntax enable
 setglobal fileencoding=utf-8 bomb
@@ -40,11 +48,12 @@ set shiftwidth=8
 set expandtab           " Tabs are converted to spaces
 set backspace=indent,eol,start
 set autoread            " If file changed outside of Vim, change without asking
-set relativenumber      " Sets relative line numbering
+" set relativenumber      " Sets relative line numbering
+set nonumber
 set showcmd             " Display incomplete command
 set autoindent          " An auto-indent
 set lisp                " for lisp magic to happen
-set cursorline          " Sets line on the one where the cursor is
+set nocursorline          " Sets line on the one where the cursor is
 set showmatch           " Highlight matching [{()}]
 set incsearch           " Search as characters are entered
 set hlsearch            " Highlight matches
@@ -63,7 +72,6 @@ set shell=zsh
 set splitright          " new vertical split will be started to right
 
 
-
 " jump to the last cursor position
   autocmd BufReadPost *
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -76,21 +84,34 @@ set splitright          " new vertical split will be started to right
 inoremap fd <Esc>
 nnoremap ; :
 nnoremap : ;
+
 map <Space> \
 map Y y$
-nnoremap <Backspace> :nohlsearch<CR>
 nnoremap <Leader><TAB> <C-^>
-nnoremap <Leader>d :bd<CR>
+nnoremap <Backspace> :nohlsearch<CR>
 nnoremap <Leader>o :only<CR>
+
 nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <Leader>m :CtrlPMRU<CR>
 nnoremap <Leader>p :CtrlP<CR>
 
 " Better split switching
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+nnoremap J <C-W>j
+nnoremap K <C-W>k
+nnoremap H <C-W>h
+nnoremap L <C-W>l
+
+
+" Emacs commands in insert mode:
+inoremap <C-A> <Home>
+inoremap <C-B> <Left>
+inoremap <C-E> <End>
+inoremap <C-F> <Right>
+inoremap <C-B> <Left>
+inoremap <C-K> <Esc>lDa
+inoremap <C-U> <Esc>d0xi
+inoremap <C-Y> <Esc>Pa
+
 
 " double %% magic - envoked in command-mode, returns current directory
 cnoremap <expr> %% expand('%:h').'/'
@@ -113,13 +134,10 @@ inoremap <s-tab> <c-n>
 
 " vim-sneak config
 
-let g:sneak#s_next = 1
-
 " airline settings
 let g:airline#extensions#tabline#enabled = 0
 let g:airline_right_sep=''
 let g:airline_left_sep=''
-" let g:airline_theme="solarized"
 let g:airline#extensions#whitespace#enabled = 0
 
 " Rainbow parentheses config
