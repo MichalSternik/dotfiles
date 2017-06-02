@@ -32,9 +32,9 @@ alias rkt="racket"
 alias py="python3.5 "
 alias lua="lua5.3 "
 alias shut="shutdown now"
-alias irc="TERM=tmux-256color irssi"
-alias irssi="TERM=tmux-256color irssi"
+alias irc="TERM=tmux-256color weechat"
 alias wee="TERM=screen-256color weechat"
+alias beeti="beet import  "
 
 # fasd aliases:
 

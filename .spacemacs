@@ -145,8 +145,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Iosevka Term"
-                               :size 13
+   dotspacemacs-default-font '("Iosevka"
+                               :size 17
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -421,8 +421,8 @@ you should place your code here."
 
   (defun enable-solarized-in-terminal (frame)
     (unless (display-graphic-p frame)
-      (set-frame-parameter frame 'background-mode 'dark)
-      (set-terminal-parameter frame 'background-mode 'dark)
+      (set-frame-parameter frame 'background-mode 'light)
+      (set-terminal-parameter frame 'background-mode 'light)
       (spacemacs/load-theme 'solarized)))
 
   (defun enable-solarized-in-gui ()

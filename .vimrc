@@ -32,8 +32,7 @@ if has("termguicolors")
 endif
 
 set background=light
-" colorscheme wombat256i
-colorscheme solarized8_dark_flat
+colorscheme solarized8_light_flat
 
 set history=10000
 syntax enable
@@ -48,7 +47,7 @@ set shiftwidth=8
 set expandtab           " Tabs are converted to spaces
 set backspace=indent,eol,start
 set autoread            " If file changed outside of Vim, change without asking
-" set relativenumber      " Sets relative line numbering
+set relativenumber      " Sets relative line numbering
 set nonumber
 set showcmd             " Display incomplete command
 set autoindent          " An auto-indent
@@ -133,6 +132,8 @@ inoremap <s-tab> <c-n>
 "" Plugins setup and varia
 
 " vim-sneak config
+let g:sneak#label = 1
+let g:sneak#s_next = 1
 
 " airline settings
 let g:airline#extensions#tabline#enabled = 0
