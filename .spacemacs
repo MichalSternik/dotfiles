@@ -31,6 +31,16 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     html
+     ;; (ranger :variables
+     ;;         ranger-show-preview t)
+     evil-cleverparens
+     asciidoc
+     games
+     rust
+     common-lisp
+     python
+     javascript
      helm
      emacs-lisp
      (spell-checking :variables
@@ -41,9 +51,7 @@ values."
               clojure-enable-fancify-symbols t)
      emacs-lisp
      (ruby :variables
-           ruby-test-runner 'rspec
-           ruby-enable-enh-ruby-mode t
-           ruby-version-manager 'rbenv)
+           ruby-test-runner 'rspec)
      scheme
      (auto-completion :variables
                       auto-completion-return-key-behavior 'complete
@@ -60,17 +68,23 @@ values."
           org-enable-github-support t)
      markdown
      fasd
-
+     (c-c++ :variables
+            c-c++-enable-clang-support t)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(color-theme-solarized )
+   dotspacemacs-additional-packages '(
+                                      color-theme-solarized
+                                      go
+                                      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(solarized-theme)
+   dotspacemacs-excluded-packages '(
+                                    solarized-theme
+                                    )
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -113,7 +127,7 @@ values."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'hybrid
+   dotspacemacs-editing-style 'vim
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
@@ -134,18 +148,18 @@ values."
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
-   dotspacemacs-scratch-mode 'text-mode
+   dotspacemacs-scratch-mode 'org-mode
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
-                         ujelly
+                         spacemacs-dark
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Iosevka"
+   dotspacemacs-default-font '("Fira Code"
                                :size 17
                                :weight normal
                                :width normal
@@ -303,7 +317,7 @@ values."
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-e  dotspacemacs-whitespace-cleanup 'all
+   dotspacemacs-whitespace-cleanup 'all
 
    ))
 
@@ -314,6 +328,9 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+
+
+
   )
 
 (defun dotspacemacs/user-config ()
@@ -323,6 +340,34 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+
+  ;; Proper colorscheme:
+
+  (setq theming-modifications '(('solarized
+                                 (mode-line :foreground "#e9e2cb" :background "#2075c7" :inverse-video nil)
+                                 (powerline-active1 :foreground "#e9e2cb" :background "#2075c7" :inverse-video nil)
+                                 (powerline-active2 :foreground "#e9e2cb" :background "#2075c7" :inverse-video nil)
+                                 (mode-line-inactive :foreground "#2075c7" :background "#e9e2cb" :inverse-video nil)
+                                 (powerline-inactive1 :foreground "#2075c7" :background "#e9e2cb" :inverse-video nil)
+                                 (powerline-inactive2 :foreground "#2075c7" :background "#e9e2cb" :inverse-video nil)
+                                 (helm-selection :foreground "white" :background "red" :inverse-video nil)
+                                 (cursor :background "#b58900"))))
+  (add-to-list 'default-frame-alist
+               '(background-mode . dark))
+  (setq frame-background-mode 'dark)
+  (spacemacs/load-theme 'solarized)
+
+  ;; Pretty lambda:
+
+  (defun pretty-lambda ()
+    "make some word or string show as pretty Unicode symbols"
+    (setq prettify-symbols-alist '(("lambda" . 955))))
+
+  (add-hook 'racket-mode-hook 'pretty-lambda)
+  (add-hook 'scheme-mode-hook 'pretty-lambda)
+  (global-prettify-symbols-mode 1)
+
+  ;; Custom key setup:
 
   ;; DEL to clear search highlights
   (define-key evil-normal-state-map (kbd "DEL")
@@ -338,7 +383,6 @@ you should place your code here."
       (evil-next-line)))
 
   ;; Better split switching:
-
   (define-key evil-normal-state-map (kbd "H")
     (lambda ()
       (interactive)
@@ -359,42 +403,63 @@ you should place your code here."
       (interactive)
       (call-interactively 'evil-window-right)))
 
+  ;; Proper suspend frame, working just like everywhere else
+  (define-key evil-normal-state-map (kbd "C-z")
+    (lambda ()
+      (interactive)
+      (call-interactively 'suspend-frame)))
+
+  ;; kill forward char in insert mode
+  (define-key evil-insert-state-map (kbd "C-d")
+    (lambda ()
+      (interactive)
+      (call-interactively 'sp-delete-char)))
+
+  ;; Avy go to subword, because I use C-d and C-u to move
+  ;; by screen anyway
+  ;; Think C-FIND
+  (define-key evil-normal-state-map (kbd "C-f")
+    (lambda ()
+      (interactive)
+      (call-interactively 'avy-goto-word-or-subword-1)))
+
+  ;; avy go to line, because since i broke one keymap,
+  ;; i have second to pair left
+
+  (define-key evil-normal-state-map (kbd "C-n")
+    (lambda ()
+      (interactive)
+      (call-interactively 'avy-goto-line)))
+
+  ;; simpler find file - with IDO, not helm
+  ;; spawns another file AND kills one
+  ;; that is currently being edited
+
+  (define-key evil-normal-state-map (kbd "gf")
+    (lambda ()
+      (interactive)
+      (call-interactively 'ido-find-file)))
+
+  ;; Varia:
+
   ;; Snipe config
   (evil-snipe-mode 1)
   (evil-snipe-override-mode 1)
 
-  ;; Nicer lambda
-  (defun pretty-lambda ()
-    "make some word or string show as pretty Unicode symbols"
-    (setq prettify-symbols-alist
-          '(
-            ("lambda" . 955)
-            )))
-
-  (add-hook 'racket-mode-hook 'pretty-lambda)
-  (add-hook 'scheme-mode-hook 'pretty-lambda)
-  (global-prettify-symbols-mode 1)
-
   ;; GEISER Setup
-  (setq geiser-active-implementations '(racket))
+  (setq geiser-active-implementations '(chez racket))
   (setq geiser-repl-autodoc-p 1)
+  (setq geiser-mode-smart-tab-p t)
   (setq geiser-repl-query-on-kill-p nil)
+  (setq geiser-debug-jump-to-debug-p nil)
+  (setq geiser-implementations-alist
+        '(((regexp "\\.scm$") chez)
+         ((regexp "\\.ss$") chez)
+         ((regexp "\\.rkt$") racket)))
 
-
-  ;; Sonic Pi https://github.com/repl-electric/sonic-pi.el
-  ;; (spacemacs/declare-prefix "o" "sonic-pi-prefix")
-  ;; (setq sonic-pi-path "/usr/lib/sonic-pi/") ; Must end with "/"
-  ;; (require 'sonic-pi)
-  ;; (spacemacs/set-leader-keys "os" 'sonic-pi-send-buffer)
-  ;; (spacemacs/set-leader-keys "oj" 'sonic-pi-jack-in)
-  ;; (spacemacs/set-leader-keys "oc" 'sonic-pi-connect)
-  ;; (spacemacs/set-leader-keys "oq" 'sonic-pi-quit)
-  ;; (spacemacs/set-leader-keys "ok" 'sonic-pi-stop-all)
 
   ;; Nice line wrapping:
-
   (add-hook 'org-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
-  (add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
   (add-hook 'markdown-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
   (add-hook 'org-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
   (add-hook 'enh-ruby-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
@@ -402,51 +467,13 @@ you should place your code here."
   (add-hook 'scheme-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
   (add-hook 'ruby-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
 
-
-
-  ;; Fix the theme:
-(setq theming-modifications
-      '((solarized
-         (mode-line :foreground "#e9e2cb" :background "#2075c7" :inverse-video nil)
-         (powerline-active1 :foreground "#e9e2cb" :background "#2075c7" :inverse-video nil)
-         (powerline-active2 :foreground "#e9e2cb" :background "#2075c7" :inverse-video nil)
-         (mode-line-inactive :foreground "#2075c7" :background "#e9e2cb" :inverse-video nil)
-         (powerline-inactive1 :foreground "#2075c7" :background "#e9e2cb" :inverse-video nil)
-         (powerline-inactive2 :foreground "#2075c7" :background "#e9e2cb" :inverse-video nil)
-         ;; Make a really prominent helm selection line.
-         (helm-selection :foreground "white" :background "red" :inverse-video nil)
-         ;; See comment above about dotspacemacs-colorize-cursor-according-to-state.
-         (cursor :background "#b58900")
-       )))
-
-  (defun enable-solarized-in-terminal (frame)
-    (unless (display-graphic-p frame)
-      (set-frame-parameter frame 'background-mode 'light)
-      (set-terminal-parameter frame 'background-mode 'light)
-      (spacemacs/load-theme 'solarized)))
-
-  (defun enable-solarized-in-gui ()
-    (mapc 'disable-theme custom-enabled-themes)
-    (setup-solarized-theme)
-    (spacemacs/load-theme 'solarized))
-
-  (defun setup-solarized-theme ()
-    (custom-set-faces
-     '(default (
-                (((type tty) (background dark)) (:background "nil"))
-                )))
-    (set-face-inverse-video 'spacemacs-motion-face nil)
-    (set-face-inverse-video 'spacemacs-insert-face nil)
-    (set-face-inverse-video 'spacemacs-normal-face nil)
-    (set-face-inverse-video 'spacemacs-visual-face nil)
-    (set-face-inverse-video 'spacemacs-replace-face nil))
-
-  (spacemacs|do-after-display-system-init (enable-solarized-in-gui))
-  (add-hook 'after-make-frame-functions 'enable-solarized-in-terminal)
-
-  ;; Varia:
+  ;; Proper text width - mutt compatible
+  (add-hook 'text-mode-hook        #'turn-on-auto-fill)
+  (add-hook 'Fundamental-mode-hook #'turn-on-auto-fill)
+  (setq-default fill-column 78)
 
   (global-company-mode)
+  (spacemacs/toggle-evil-cleverparens-on)
   (setq powerline-default-separator 'arrow)
   (spacemacs/toggle-highlight-current-line-globally-off)
   (spacemacs/toggle-aggressive-indent-globally-on)
@@ -460,7 +487,7 @@ you should place your code here."
   (setq split-width-threshold 0)
   (spacemacs/toggle-golden-ratio-on) ; better splits
   (spacemacs/toggle-mode-line-minor-modes-off) ; cleaner mode-line
-
+  (spacemacs/toggle-auto-fill-mode-on)
 
   )
 

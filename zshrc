@@ -7,10 +7,8 @@
 
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
-
-# tututut
 
 export TERM=xterm-256color
 
@@ -18,23 +16,35 @@ export TERM=xterm-256color
 
 alias e="emacsclient --alternate-editor="" -ct"
 alias eg="emacsclient --alternate-editor="" -c"
-alias v="nvim"
+alias v="emacsclient --alternate-editor="" -ct"
 alias c="TERM=tmux-256color cmus "
 alias home="cd ~; clear"
 alias vimrc="v ~/.vimrc"
 alias mtr="metronome"
-alias cpdot="cp .vimrc ~/.zprezto/runcoms/zshrc .spacemacs .muttrc ~/.zprezto/runcoms/zpreztorc .tmux.conf ~/Documents/dotfiles"
+alias cpdot="cp .vimrc ~/.zprezto/runcoms/* .spacemacs .weechat .muttrc .tmux.conf ~/Documents/dotfiles"
 alias tomobi="~/kindlegen "
 alias mu="mutt"
 alias baduk="sudo java -jar ~/Downloads/cgoban.jar"
-alias ag="sudo apt-get "
+alias apt="sudo apt-get "
 alias rkt="racket"
-alias py="python3.5 "
+alias py="python2.7 "
 alias lua="lua5.3 "
 alias shut="shutdown now"
-alias irc="TERM=tmux-256color weechat"
+alias irc="TERM=screen-256color weechat"
 alias wee="TERM=screen-256color weechat"
 alias beeti="beet import  "
+alias r="ranger "
+alias rm="rm -f "
+alias gdball="gdb --batch --ex run --ex bt --ex q --args "
+alias rtv="cd ~/Documents/books/programowanie/repos/rtv && python3.5 -m rtv"
+
+# my functions:
+
+mkcd()
+{
+    mkdir -p -- "$1" &&
+      cd -P -- "$1"
+}
 
 # fasd aliases:
 

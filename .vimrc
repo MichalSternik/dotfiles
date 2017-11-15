@@ -32,7 +32,7 @@ if has("termguicolors")
 endif
 
 set background=light
-colorscheme solarized8_light_flat
+colorscheme solarized8_dark_flat
 
 set history=10000
 syntax enable
@@ -89,6 +89,7 @@ map Y y$
 nnoremap <Leader><TAB> <C-^>
 nnoremap <Backspace> :nohlsearch<CR>
 nnoremap <Leader>o :only<CR>
+nnoremap <Leader>d :bd<CR>
 
 nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <Leader>m :CtrlPMRU<CR>
@@ -116,7 +117,6 @@ inoremap <C-Y> <Esc>Pa
 cnoremap <expr> %% expand('%:h').'/'
 
 " MULTIPURPOSE TAB KEY - indent if we're at the beginning of a line. Else, do completion.
-
 function! InsertTabWrapper()
         let col = col('.') - 1
         if !col || getline('.')[col - 1] !~ '\k'
@@ -129,10 +129,9 @@ endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
 
-"" Plugins setup and varia
-
+"" Plugins setup and varia:
 " vim-sneak config
-let g:sneak#label = 1
+" let g:sneak#label = 1
 let g:sneak#s_next = 1
 
 " airline settings
