@@ -353,8 +353,8 @@ you should place your code here."
                                  (helm-selection :foreground "white" :background "red" :inverse-video nil)
                                  (cursor :background "#b58900"))))
   (add-to-list 'default-frame-alist
-               '(background-mode . dark))
-  (setq frame-background-mode 'dark)
+               '(background-mode . light))
+  (setq frame-background-mode 'light)
   (spacemacs/load-theme 'solarized)
 
   ;; Pretty lambda:
@@ -469,7 +469,6 @@ you should place your code here."
 
   ;; Proper text width - mutt compatible
   (add-hook 'text-mode-hook        #'turn-on-auto-fill)
-  (add-hook 'Fundamental-mode-hook #'turn-on-auto-fill)
   (setq-default fill-column 78)
 
   (global-company-mode)
@@ -488,7 +487,6 @@ you should place your code here."
   (spacemacs/toggle-golden-ratio-on) ; better splits
   (spacemacs/toggle-mode-line-minor-modes-off) ; cleaner mode-line
   (spacemacs/toggle-auto-fill-mode-on)
-
   )
 
 ;; Do not write anything past this comment. This is where Emacs will

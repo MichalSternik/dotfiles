@@ -101,17 +101,12 @@ nnoremap K <C-W>k
 nnoremap H <C-W>h
 nnoremap L <C-W>l
 
-
 " Emacs commands in insert mode:
 inoremap <C-A> <Home>
-inoremap <C-B> <Left>
 inoremap <C-E> <End>
+inoremap <C-B> <Left>
 inoremap <C-F> <Right>
 inoremap <C-B> <Left>
-inoremap <C-K> <Esc>lDa
-inoremap <C-U> <Esc>d0xi
-inoremap <C-Y> <Esc>Pa
-
 
 " double %% magic - envoked in command-mode, returns current directory
 cnoremap <expr> %% expand('%:h').'/'

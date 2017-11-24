@@ -30,6 +30,7 @@ alias py="python3.5 "
 alias lua="lua5.3 "
 alias sudoku="cd ~/Downloads/nudoku && ./src/nudoku"
 alias shut="shutdown now"
+alias vi="nvim"
 
 # fasd aliases:
 
