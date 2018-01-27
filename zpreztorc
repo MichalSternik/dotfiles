@@ -30,6 +30,7 @@ zstyle ':prezto:load' pmodule \
   'gpg' \
   'ssh' \
   'tmux' \
+  'python' \
   'history' \
   'directory' \
   'spectrum' \
@@ -140,10 +141,10 @@ zstyle ':prezto:module:prompt' show-return-val 'yes'
 #
 
 # Auto switch the Python virtualenv on directory change.
-# zstyle ':prezto:module:python:virtualenv' auto-switch 'yes'
+zstyle ':prezto:module:python:virtualenv' auto-switch 'yes'
 
 # Automatically initialize virtualenvwrapper if pre-requisites are met.
-# zstyle ':prezto:module:python:virtualenv' initialize 'yes'
+zstyle ':prezto:module:python:virtualenv' initialize 'yes'
 
 #
 # Screen

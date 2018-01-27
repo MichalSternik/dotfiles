@@ -31,22 +31,14 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     lua
+     git
+     go
      html
-     ;; (ranger :variables
-     ;;         ranger-show-preview t)
-     evil-cleverparens
-     asciidoc
-     games
-     rust
-     common-lisp
      python
      javascript
      helm
      emacs-lisp
-     (spell-checking :variables
-                     spell-checking-enable-by-default nil)
-     (syntax-checking :variables
-                      syntax-checking-enable-by-default nil)
      (clojure :variables
               clojure-enable-fancify-symbols t)
      emacs-lisp
@@ -76,8 +68,8 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
-                                      color-theme-solarized
                                       go
+                                      color-theme-solarized
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -148,18 +140,18 @@ values."
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive t
    ;; Default major mode of the scratch buffer (default `text-mode')
-   dotspacemacs-scratch-mode 'org-mode
+   dotspacemacs-scratch-mode 'text-mode
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
-                         spacemacs-dark
+                         spacemacs-light
                          )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Fira Code"
+   dotspacemacs-default-font '("Anonymous Pro"
                                :size 17
                                :weight normal
                                :width normal
@@ -292,7 +284,7 @@ values."
    dotspacemacs-folding-method 'evil
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
-   dotspacemacs-smartparens-strict-mode t
+   dotspacemacs-smartparens-strict-mode nil
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc…
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
@@ -300,14 +292,14 @@ values."
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
    ;; emphasis the current one). (default 'all)
-   dotspacemacs-highlight-delimiters 'all
+   dotspacemacs-highlight-delimiters 'current
    ;; If non nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
    dotspacemacs-persistent-server t
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `ag', `pt', `ack' and `grep'.
    ;; (default '("ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("ag" "pt" "ack" "grep")
+   dotspacemacs-search-tools '("ag" "ack" "pt" "grep")
    ;; The default package repository used if no explicit repository has been
    ;; specified with an installed package.
    ;; Not used for now. (default nil)
@@ -328,8 +320,6 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-
-
 
   )
 
@@ -353,8 +343,8 @@ you should place your code here."
                                  (helm-selection :foreground "white" :background "red" :inverse-video nil)
                                  (cursor :background "#b58900"))))
   (add-to-list 'default-frame-alist
-               '(background-mode . light))
-  (setq frame-background-mode 'light)
+               '(background-mode . dark))
+  (setq frame-background-mode 'dark)
   (spacemacs/load-theme 'solarized)
 
   ;; Pretty lambda:
@@ -403,6 +393,34 @@ you should place your code here."
       (interactive)
       (call-interactively 'evil-window-right)))
 
+  ;; Better insert mode maps:
+
+  (define-key evil-insert-state-map (kbd "C-h")
+    (lambda ()
+      (interactive)
+      (call-interactively 'sp-backward-delete-char)))
+
+
+  (define-key evil-insert-state-map (kbd "C-p")
+    (lambda ()
+      (interactive)
+      (call-interactively 'evil-previous-line)))
+
+  (define-key evil-insert-state-map (kbd "C-n")
+    (lambda ()
+      (interactive)
+      (call-interactively 'evil-next-line)))
+
+  (define-key evil-insert-state-map (kbd "C-a")
+    (lambda ()
+      (interactive)
+      (call-interactively 'evil-beginning-of-line)))
+
+  (define-key evil-insert-state-map (kbd "C-e")
+    (lambda ()
+      (interactive)
+      (call-interactively 'evil-end-of-line)))
+
   ;; Proper suspend frame, working just like everywhere else
   (define-key evil-normal-state-map (kbd "C-z")
     (lambda ()
@@ -431,15 +449,14 @@ you should place your code here."
       (interactive)
       (call-interactively 'avy-goto-line)))
 
-  ;; simpler find file - with IDO, not helm
-  ;; spawns another file AND kills one
-  ;; that is currently being edited
+  ;; simpler find file with IDO.
+  ;; spawns another file AND kills
+  ;; one that is being edited
 
   (define-key evil-normal-state-map (kbd "gf")
     (lambda ()
       (interactive)
       (call-interactively 'ido-find-file)))
-
   ;; Varia:
 
   ;; Snipe config
@@ -457,7 +474,6 @@ you should place your code here."
          ((regexp "\\.ss$") chez)
          ((regexp "\\.rkt$") racket)))
 
-
   ;; Nice line wrapping:
   (add-hook 'org-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
   (add-hook 'markdown-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
@@ -469,25 +485,74 @@ you should place your code here."
 
   ;; Proper text width - mutt compatible
   (add-hook 'text-mode-hook        #'turn-on-auto-fill)
-  (setq-default fill-column 78)
+  (setq-default fill-column 76)
 
+  ;; Various toggles:
   (global-company-mode)
-  (spacemacs/toggle-evil-cleverparens-on)
   (setq powerline-default-separator 'arrow)
   (spacemacs/toggle-highlight-current-line-globally-off)
   (spacemacs/toggle-aggressive-indent-globally-on)
   (add-hook 'org-mode-hook 'org-toggle-pretty-entities 1)
   (rainbow-delimiters-mode-enable)
-  (spacemacs/toggle-indent-guide-globally-on)
+  (spacemacs/toggle-indent-guide-globally-off)
   (spacemacs/toggle-highlight-current-line-globally-off)
-
   (spacemacs/toggle-truncate-lines-on)
-  (setq split-height-threshold nil)  ; sets default split direction - which is vertical
+  (setq split-height-threshold nil)
   (setq split-width-threshold 0)
-  (spacemacs/toggle-golden-ratio-on) ; better splits
-  (spacemacs/toggle-mode-line-minor-modes-off) ; cleaner mode-line
+  (spacemacs/toggle-golden-ratio-on)
+  (spacemacs/toggle-mode-line-minor-modes-off)
+  (global-highlight-parentheses-mode)
   (spacemacs/toggle-auto-fill-mode-on)
+  (spacemacs/toggle-centered-point-globally-on)
+
+  ;; just to complete koans!
+  (defun go-koans-run ()
+    "Running Go koans test from"
+    (interactive)
+    (save-buffer)
+    (setq output (shell-command-to-string "go test"))
+
+    (with-current-buffer (get-buffer-create "*go-koans*")
+      (erase-buffer)
+      (insert output))
+
+
+    (when (string-match "\\(about_[A-Za-z0-9_]*.go\\):\\([0-9]+\\)" output)
+
+      (let
+          ((line (string-to-int (match-string 2 output)))
+           (file (expand-file-name (match-string 1 output))))
+
+        (find-file (expand-file-name file))
+        (goto-line line)
+
+
+        ;;; if expand region exists run it
+        ;; if you don't have it https://github.com/magnars/expand-region.el
+        (if (fboundp 'er/expand-region)
+            (search-forward "__")
+          (er/expand-region 1)))))
+
+
+  (eval-after-load 'go-mode
+    '(define-key go-mode-map (kbd "C-c C-r") 'go-koans-run))
+
+  (provide 'go-koans)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (white-sand-theme rebecca-theme org-mime go exotica-theme zonokai-theme zenburn-theme zen-and-art-theme yapfify xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reverse-theme restart-emacs rbenv rake rainbow-delimiters railscasts-theme pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode professional-theme popwin planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pastels-on-dark-theme paradox ox-gfm orgit organic-green-theme org-projectile org-present org-pomodoro org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme neotree naquadah-theme mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minitest minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme macrostep lush-theme lua-mode lorem-ipsum livid-mode live-py-mode linum-relative link-hint light-soap-theme less-css-mode json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt heroku-theme hemisu-theme help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio go-guru go-eldoc gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md geiser gandalf-theme fuzzy flx-ido flatui-theme flatland-theme firebelly-theme fill-column-indicator fasd farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-snipe evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump dracula-theme django-theme disaster define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme company-web company-tern company-statistics company-go company-c-headers company-anaconda column-enforce-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cmake-mode clues-theme clojure-snippets clj-refactor clean-aindent-mode clang-format cider-eval-sexp-fu chruby cherry-blossom-theme busybee-theme bundler bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:background nil)))))

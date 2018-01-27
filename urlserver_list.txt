@@ -1,0 +1,5 @@
+{
+  0: ('19/10/17 18:56:03', 'GeDaMo', 'irc.freenode.##programming', 'https://developer.gnome.org/libnm/stable/usage.html', "GeDaMo\tcristoforo: is this what you're looking at? https://developer.gnome.org/libnm/stable/usage.html"),
+  1: ('19/10/17 18:56:53', 'naf', 'irc.freenode.##programming', 'https://pastebin.com/VsZLjuk9', "naf\tcan someone here help me understand what i'm doing wrong here? all connections to valid socks4 servers hang at line 45 in the .cpp file (the second paste). Not sure if it's a problem in the request I make or what. https://pastebin.com/VsZLjuk9 https://pastebin.com/jDNMCVQg"),
+  2: ('19/10/17 18:56:53', 'naf', 'irc.freenode.##programming', 'https://pastebin.com/jDNMCVQg', "naf\tcan someone here help me understand what i'm doing wrong here? all connections to valid socks4 servers hang at line 45 in the .cpp file (the second paste). Not sure if it's a problem in the request I make or what. https://pastebin.com/VsZLjuk9 https://pastebin.com/jDNMCVQg"),
+}

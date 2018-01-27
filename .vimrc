@@ -18,6 +18,8 @@ Plugin 'roman/golden-ratio'
 " better navigation:
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-vinegar'
+" golang stuff
+Plugin 'faith/vim-go'
 " lispy:
 Plugin 'wlangstroth/vim-racket'
 Plugin 'kien/rainbow_parentheses.vim'
@@ -28,10 +30,10 @@ filetype plugin indent on
 
 " colors:
 if has("termguicolors")
-        set termguicolors
+    set termguicolors
 endif
 
-set background=light
+set background=dark
 colorscheme solarized8_dark_flat
 
 set history=10000
@@ -44,7 +46,7 @@ set hidden              " Hides buffers instead of closing them
 set tabstop=8
 set softtabstop=8
 set shiftwidth=8
-set expandtab           " Tabs are converted to spaces
+set noexpandtab           " Tabs are NOT converted to spaces
 set backspace=indent,eol,start
 set autoread            " If file changed outside of Vim, change without asking
 set relativenumber      " Sets relative line numbering
@@ -61,7 +63,7 @@ set smartcase           " ...unless it's beginning of the word
 set novisualbell        " No beeping
 set noerrorbells        " No beeping
 set nobackup            " Don't do backup
-set nowritebackup
+set nowritebackup       " Don't do backup 
 set wildmenu            " Set proper autocompition.
 set path+=**            " enable recursive searching
 set wildmode=list:longest
@@ -107,6 +109,9 @@ inoremap <C-E> <End>
 inoremap <C-B> <Left>
 inoremap <C-F> <Right>
 inoremap <C-B> <Left>
+
+" run python, be happy
+imap <F5> <Esc>:w<CR>:!clear;python %<CR>
 
 " double %% magic - envoked in command-mode, returns current directory
 cnoremap <expr> %% expand('%:h').'/'
@@ -161,5 +166,40 @@ let g:rbpt_loadcmd_toggle = 0
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
 
+" go colors setup:
+
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_types = 1
+
+" color same ids
+let g:go_auto_sameids = 1
+
+" autoimport dependencies:
+let g:go_fmt_command = "goimports"
+
+" type info in command area:
+let g:go_auto_type_info = 1
+
+au FileType go nmap <F12> <Plug>(go-def)
+
+" Enable deoplete on startup
+if has('nvim')
+    let g:deoplete#enable_at_startup = 1
+endif
+
+
+" Disable deoplete when in multi cursor mode
+function! Multiple_cursors_before()
+    let b:deoplete_disable_auto_complete = 1
+endfunction
+
+function! Multiple_cursors_after()
+    let b:deoplete_disable_auto_complete = 0
+endfunction

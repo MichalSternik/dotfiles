@@ -10,10 +10,8 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-export TERM=xterm-256color
-
-# my aliases:
-
+# aliases:
+alias vi="nvim "
 alias e="emacsclient --alternate-editor="" -ct"
 alias eg="emacsclient --alternate-editor="" -c"
 alias v="emacsclient --alternate-editor="" -ct"
@@ -22,7 +20,6 @@ alias home="cd ~; clear"
 alias vimrc="vi ~/.vimrc"
 alias mtr="metronome"
 alias cpdot="cp .vimrc ~/.zprezto/runcoms/* .spacemacs .weechat .muttrc .tmux.conf ~/Documents/dotfiles"
-alias tomobi="~/kindlegen "
 alias mu="mutt"
 alias baduk="sudo java -jar ~/Downloads/cgoban.jar"
 alias apt="sudo apt-get "
@@ -33,11 +30,14 @@ alias shut="shutdown now"
 alias irc="TERM=screen-256color weechat"
 alias wee="TERM=screen-256color weechat"
 alias beeti="beet import  "
-alias r="ranger "
+alias r="TERM=tmux-256color ranger "
 alias rm="rm -f "
 alias gdball="gdb --batch --ex run --ex bt --ex q --args "
-alias rtv="cd ~/Documents/books/programowanie/repos/rtv && python3.5 -m rtv"
-
+alias rtv="TERM=screen-256color cd ~/Documents/books/programowanie/repos/rtv && python3.5 -m rtv"
+alias info="TERM=screen-256color info "
+alias lynx="TERM=screen-256color lynx "
+alias l="exa"
+alias ll="exa --long --all"
 # my functions:
 
 mkcd()
