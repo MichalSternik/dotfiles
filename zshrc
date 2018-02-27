@@ -10,6 +10,9 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+# Source fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 # aliases:
 alias vi="nvim "
 alias e="emacsclient --alternate-editor="" -ct"
@@ -56,3 +59,6 @@ alias sd='fasd -sid'     # interactive directory selection
 alias sf='fasd -sif'     # interactive file selection
 alias j='fasd_cd -d'     # cd, same functionality as j in autojump
 alias jj='fasd_cd -d -i' # cd with interactive selection
+
+# zsh-bd
+. $HOME/.zsh/plugins/bd/bd.zsh

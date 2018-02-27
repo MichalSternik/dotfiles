@@ -19,10 +19,7 @@ Plugin 'roman/golden-ratio'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-vinegar'
 " golang stuff
-Plugin 'faith/vim-go'
-" lispy:
-Plugin 'wlangstroth/vim-racket'
-Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'fatih/vim-go'
 call vundle#end()
 filetype plugin indent on
 
@@ -34,7 +31,7 @@ if has("termguicolors")
 endif
 
 set background=dark
-colorscheme solarized8_dark_flat
+colorscheme solarized8_light_flat
 
 set history=10000
 syntax enable
@@ -139,33 +136,6 @@ let g:airline#extensions#tabline#enabled = 0
 let g:airline_right_sep=''
 let g:airline_left_sep=''
 let g:airline#extensions#whitespace#enabled = 0
-
-" Rainbow parentheses config
-let g:rbpt_colorpairs = [
-    \ ['brown',       'RoyalBlue3'],
-    \ ['Darkblue',    'SeaGreen3'],
-    \ ['darkgray',    'DarkOrchid3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['black',       'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['Darkblue',    'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkcyan',    'SeaGreen3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['red',         'firebrick3'],
-    \ ]
-
-let g:rbpt_max = 16
-let g:rbpt_loadcmd_toggle = 0
-" rainbow always on
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
 
 " go colors setup:
 

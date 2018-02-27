@@ -31,6 +31,8 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     yaml
+     rust
      lua
      git
      go
@@ -55,7 +57,7 @@ values."
      (shell :variables
             shell-default-height 30
             shell-default-position 'right
-            shell-default-shell 'ansi-term)
+            shell-default-shell 'eshell)
      (org :variables
           org-enable-github-support t)
      markdown
@@ -151,8 +153,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Anonymous Pro"
-                               :size 17
+   dotspacemacs-default-font '("PT Mono"
+                               :size 23
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -210,7 +212,7 @@ values."
    ;; Maximum number of rollback slots to keep in the cache. (default 5)
    dotspacemacs-max-rollback-slots 5
    ;; If non nil, `helm' will try to minimize the space it uses. (default nil)
-   dotspacemacs-helm-resize t
+   dotspacemacs-helm-resize nil
    ;; if non nil, the helm header is hidden when there is only one source.
    ;; (default nil)
    dotspacemacs-helm-no-header nil
@@ -343,8 +345,8 @@ you should place your code here."
                                  (helm-selection :foreground "white" :background "red" :inverse-video nil)
                                  (cursor :background "#b58900"))))
   (add-to-list 'default-frame-alist
-               '(background-mode . dark))
-  (setq frame-background-mode 'dark)
+               '(background-mode . light))
+  (setq frame-background-mode 'light)
   (spacemacs/load-theme 'solarized)
 
   ;; Pretty lambda:
@@ -372,34 +374,12 @@ you should place your code here."
       (call-interactively 'spacemacs/evil-insert-line-below)
       (evil-next-line)))
 
-  ;; Better split switching:
-  (define-key evil-normal-state-map (kbd "H")
-    (lambda ()
-      (interactive)
-      (call-interactively 'evil-window-left)))
-
-  (define-key evil-normal-state-map (kbd "J")
-    (lambda ()
-      (interactive)
-      (call-interactively 'evil-window-down)))
-
-  (define-key evil-normal-state-map (kbd "K")
-    (lambda ()
-      (interactive)
-      (call-interactively 'evil-window-up)))
-
-  (define-key evil-normal-state-map (kbd "L")
-    (lambda ()
-      (interactive)
-      (call-interactively 'evil-window-right)))
-
-  ;; Better insert mode maps:
+  ;; More emacsy insert mode keybidings - like ones in a shell
 
   (define-key evil-insert-state-map (kbd "C-h")
     (lambda ()
       (interactive)
       (call-interactively 'sp-backward-delete-char)))
-
 
   (define-key evil-insert-state-map (kbd "C-p")
     (lambda ()
@@ -414,12 +394,17 @@ you should place your code here."
   (define-key evil-insert-state-map (kbd "C-a")
     (lambda ()
       (interactive)
-      (call-interactively 'evil-beginning-of-line)))
+      (call-interactively 'move-beginning-of-line)))
 
   (define-key evil-insert-state-map (kbd "C-e")
     (lambda ()
       (interactive)
-      (call-interactively 'evil-end-of-line)))
+      (call-interactively 'move-end-of-line)))
+
+  (define-key evil-insert-state-map (kbd "C-k")
+    (lambda ()
+      (interactive)
+      (call-interactively 'kill-line)))
 
   ;; Proper suspend frame, working just like everywhere else
   (define-key evil-normal-state-map (kbd "C-z")
@@ -449,14 +434,25 @@ you should place your code here."
       (interactive)
       (call-interactively 'avy-goto-line)))
 
-  ;; simpler find file with IDO.
-  ;; spawns another file AND kills
-  ;; one that is being edited
+  ;; nicer lisp writing - no more reaching for insert-paren
+
+  (define-key evil-insert-state-map (kbd "M-a")
+    (lambda ()
+      (interactive)
+      (call-interactively 'sp-wrap)))
+
+  ;; Keybidings to do faster do stuff that happens often.
 
   (define-key evil-normal-state-map (kbd "gf")
     (lambda ()
       (interactive)
       (call-interactively 'ido-find-file)))
+
+  (define-key evil-normal-state-map (kbd "gb")
+    (lambda ()
+      (interactive)
+      (call-interactively 'helm-buffers-list)))
+
   ;; Varia:
 
   ;; Snipe config
@@ -485,7 +481,7 @@ you should place your code here."
 
   ;; Proper text width - mutt compatible
   (add-hook 'text-mode-hook        #'turn-on-auto-fill)
-  (setq-default fill-column 76)
+  (setq-default fill-column 80)
 
   ;; Various toggles:
   (global-company-mode)
@@ -504,6 +500,8 @@ you should place your code here."
   (global-highlight-parentheses-mode)
   (spacemacs/toggle-auto-fill-mode-on)
   (spacemacs/toggle-centered-point-globally-on)
+
+  (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
 
   ;; just to complete koans!
   (defun go-koans-run ()
@@ -527,7 +525,7 @@ you should place your code here."
         (goto-line line)
 
 
-        ;;; if expand region exists run it
+        ;; if expand region exists run it
         ;; if you don't have it https://github.com/magnars/expand-region.el
         (if (fboundp 'er/expand-region)
             (search-forward "__")
@@ -547,9 +545,12 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#bcbcbc" "#d70008" "#5faf00" "#875f00" "#268bd2" "#800080" "#008080" "#5f5f87"])
+ '(evil-want-Y-yank-to-eol t)
  '(package-selected-packages
    (quote
-    (white-sand-theme rebecca-theme org-mime go exotica-theme zonokai-theme zenburn-theme zen-and-art-theme yapfify xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reverse-theme restart-emacs rbenv rake rainbow-delimiters railscasts-theme pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode professional-theme popwin planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pastels-on-dark-theme paradox ox-gfm orgit organic-green-theme org-projectile org-present org-pomodoro org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme neotree naquadah-theme mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minitest minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme macrostep lush-theme lua-mode lorem-ipsum livid-mode live-py-mode linum-relative link-hint light-soap-theme less-css-mode json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme info+ indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt heroku-theme hemisu-theme help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio go-guru go-eldoc gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md geiser gandalf-theme fuzzy flx-ido flatui-theme flatland-theme firebelly-theme fill-column-indicator fasd farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-snipe evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump dracula-theme django-theme disaster define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme company-web company-tern company-statistics company-go company-c-headers company-anaconda column-enforce-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cmake-mode clues-theme clojure-snippets clj-refactor clean-aindent-mode clang-format cider-eval-sexp-fu chruby cherry-blossom-theme busybee-theme bundler bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (yaml-mode toml-mode racer pos-tip cargo rust-mode extempore-mode zenburn-theme zen-and-art-theme yapfify xterm-color ws-butler winum white-sand-theme which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reverse-theme restart-emacs rebecca-theme rbenv rake rainbow-delimiters railscasts-theme pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode professional-theme popwin planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode paradox ox-gfm orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme neotree naquadah-theme mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minitest minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme macrostep lush-theme lua-mode lorem-ipsum livid-mode live-py-mode linum-relative link-hint light-soap-theme less-css-mode json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio go-guru go-eldoc go gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md geiser gandalf-theme fuzzy flx-ido flatui-theme flatland-theme fill-column-indicator fasd farmhouse-theme fancy-battery eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-snipe evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump dracula-theme django-theme disaster define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme company-web company-tern company-statistics company-go company-c-headers company-anaconda column-enforce-mode color-theme-solarized color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode cmake-mode clues-theme clojure-snippets clj-refactor clean-aindent-mode clang-format cider-eval-sexp-fu chruby cherry-blossom-theme busybee-theme bundler bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

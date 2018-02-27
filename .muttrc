@@ -1,15 +1,18 @@
 source "~/.mutt/accounts/account1" # setup for smokvillentretenmerth
 source "~/.mutt/accounts/account2" # setup for michalsternikk
-source "~/.mutt/colors/mutt-colors-solarized-dark-16.muttrc" # colorscheme
+source "~/.mutt/colors/mutt-colors-solarized-light-16.muttrc" # colorscheme
 source "~/.mutt/aliases.txt" # contact book
 set display_filter="~/.mutt/alias_magic"
+
 # general && compose mail behaviour
 set ssl_starttls=yes  # settles secure connection
 set ssl_force_tls=yes # ensures secure connection
 set header_cache=~/.mutt/cache/headers
 set message_cachedir=~/.mutt/cache/bodies
 set certificate_file=~/.mutt/certificates
+
 set editor="emacsclient --alternate-editor="" -ct"
+
 set text_flowed=yes # part of sane behaviour
 set move = no
 set record=""
@@ -21,7 +24,7 @@ set envelope_from                    # which from?
 set sig_dashes                       # dashes before sig
 set edit_headers                     # show headers when composing
 set fast_reply                       # skip to compose when replying
-# set askcc                            # ask for CC:
+# set askcc                          # ask for CC:
 set fcc_attach                       # save attachments with the body
 unset mime_forward                   # forward attachments as part of body
 set forward_format = "Fwd: %s"       # format of subject when forwarding
@@ -31,20 +34,19 @@ set reply_to                         # reply to Reply to: field
 set reverse_name                     # reply as whomever it was to
 set include                          # include message in replies
 set forward_quote                    # include message in forwards
+
 bind compose p postpone-message
 bind index p recall-message
 
-# sidebar setup---------------------------------------
-# set sidebar_delim   = '│'
 set sidebar_visible = no
 
-# header behaviour------------------------------------
+# header behaviour
 ignore *                                # to start, ignore all headers...
 unignore from: to: cc: date: subject:   # but show only these
 unhdr_order *                           # some distros order things by default...
 hdr_order from: to: cc: date: subject:  # ...and i want things in this order
 
-# macros && sidebar, navigating mailboxes-------------
+# macros && sidebar, navigating mailboxes
 macro index gs '<sync-mailbox><enter-command>source ~/.mutt/accounts/account1<enter><change-folder>!<enter>'
 macro index gm '<sync-mailbox><enter-command>source ~/.mutt/accounts/account2<enter><change-folder>!<enter>'
 macro index ga '=[Google Mail]/All Mail' 'Go to all mail'
@@ -53,7 +55,7 @@ bind index,pager <down>   sidebar-next
 bind index,pager <up>     sidebar-prev
 bind index,pager <right>  sidebar-open
 
-# Index Key Bindings ---------------------------------
+# Index Key Bindings
 bind index gg       first-entry
 bind index G        last-entry
 bind index R        group-reply
@@ -67,7 +69,7 @@ macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "ma
 macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
 macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 
-# Pager View Options ---------------------------------
+# Pager View Options
 set pager_stop             # don't go to next message automatically
 set menu_scroll            # scroll in menus
 set tilde                  # show tildes like in vim
@@ -75,7 +77,7 @@ unset markers              # no ugly plus signs
 set quote_regexp = "^( {0,4}[>|:#%]| {0,4}[a-z0-9]+[>|]+)+"
 alternative_order text/plain text/enriched text/html
 
-# Pager Key Bindings ---------------------------------
+# Pager Key Bindings
 bind pager k  previous-line
 bind pager j  next-line
 bind pager gg top
@@ -85,4 +87,3 @@ bind pager B bounce-message
 
 # View attachments properly.
 bind attach <return> view-mailcap
-macro pager b "|urlview<enter>" "call urlview to open links"
